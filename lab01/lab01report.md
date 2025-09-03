@@ -11,19 +11,19 @@
 
 ---
 
-**Introduction**
+# **Introduction**
 
 This is an introductory lab that shows rudimentary web development
 
-**Screenshots Deliverables**
+# **Screenshots Deliverables**
 
-**Deliverable 1: Screenshot of the Website**
+## **Deliverable 1: Screenshot of the Website**
 
 ![image.png](image.png)
 
-**Experience and Challenges**
+# **Experience and Challenges**
 
-**Reflection on Completing the Lab**
+## **Reflection on Completing the Lab**
 
 - **What did you learn?**  I learned a class can have multiple elements, while an id supersedes a class. This means if both are applied to the same element, the `id` styles will override the `class` styles.
 - **Challenges Faced**: I initially had problems styling my id and class because i mixed up their identifiers ( # and .)
