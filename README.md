@@ -28,7 +28,8 @@ Welcome to the public repository for the **WAS500 - Web Application Scripting** 
 2. **Invite** me (**`yuhui-feng_seneca`**) as a **collaborator** to your repository. Without access, I cannot grade your reports.
 3. **Organize** your repository following the exact naming conventions provided in each lab instruction:
    - Example for Week 1: `./lab01/lab01.md` with all necessary files placed in the `lab01` folder, see image below:
-   ![Example folder structure](./images/seneca.png)
+   
+   ![Example folder structure](./images/screenshot.png)
 4. Carefully **review** the **Deliverables** section of the instructions to ensure all required elements are included. 
    - If the instructions specify a **code block**, add a markdown code block in your labxx.md file under the appropriate section. 
    -  If an **image** is required, insert it in your labxx.md file using the correct image syntax.
