@@ -5,9 +5,9 @@
 
 **Table of Contents**
 
-1. [Introduction](https://github.com/yuhui-feng_seneca/WAS500-LABS/blob/main/report_template.md#introduction)
-2. [Screenshots](https://github.com/yuhui-feng_seneca/WAS500-LABS/blob/main/report_template.md#screenshots)
-3. [Experience and Challenges](https://github.com/yuhui-feng_seneca/WAS500-LABS/blob/main/report_template.md#experience-and-challenges)
+1. [Introduction](https://github.com/faddul-ramon-adeyemi_seneca/was500-labs/blob/main/report_template.md#introduction)
+2. [Screenshots](https://github.com//faddul-ramon-adeyemi_seneca/was500-labs/blob/main/report_template.md#screenshots)
+3. [Experience and Challenges](https:///faddul-ramon-adeyemi_seneca/was500-labs/blob/main/report_template.md#experience-and-challenges)
 
 ---
 
