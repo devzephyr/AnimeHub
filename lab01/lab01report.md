@@ -5,7 +5,7 @@
 
 **Table of Contents**
 
-1. [Introduction](https://github.com/faddul-ramon-adeyemi_seneca/was500-labs/blob/main/lab01report.md#introduction)
+1. [Introduction](https://github.com/faddul-ramon-adeyemi_seneca/was500-labs/blob/main/lab01/lab01report.md#introduction)
 2. [Screenshots](https://github.com//faddul-ramon-adeyemi_seneca/was500-labs/blob/main/lab01report.md.md#screenshots)
 3. [Experience and Challenges](https:///faddul-ramon-adeyemi_seneca/was500-labs/blob/main/lab01report.mdmd#experience-and-challenges)
 
