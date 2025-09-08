@@ -1,0 +1,29 @@
+h1 {
+    color: darkblue;
+    text-align: center;
+  }
+  
+  p {
+    font-size: 18px;
+    color: gray;
+  }
+  
+  a {
+    color: red;
+    text-decoration: none;
+  }
+  
+  img {
+    border: 2px solid black;
+    margin: 10px;
+  }
+
+.title {
+    font-family: Arial, sans-serif;
+  }
+  
+
+#main-paragraph {
+    background-color: #f0f0f0;
+    padding: 10px;
+  }
