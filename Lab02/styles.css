@@ -1,4 +1,9 @@
 
+/* Base layout and typography */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
   background: #1a0026; 
   color: #fff8dc; 
@@ -24,16 +29,86 @@ footer {
   margin-top: 2em;
 }
 
+/* Skip link: hidden by default, visible on focus */
+.skip-link {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  left: 1rem;
+  top: 1rem;
+  width: auto;
+  height: auto;
+  padding: 0.5rem 0.75rem;
+  background: #ffd700;
+  color: #3b0a45;
+  border-radius: 6px;
+  outline: 3px solid #ffec8b;
+  box-shadow: 0 0 0 3px #3b0a45;
+  text-decoration: none;
+  z-index: 1000;
+}
+
+/* Navigation */
+nav {
+  background: #30083a;
+  border-bottom: 2px solid #ffd700;
+}
+
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem 1.5rem;
+}
+
+.nav-list a {
+  display: block;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  color: #ffec8b;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-list a[aria-current="page"] {
+  background: rgba(255, 215, 0, 0.15);
+  color: #ffd700;
+}
+
+.nav-list a:hover {
+  background: rgba(255, 215, 0, 0.22);
+}
+
+.nav-list a:focus-visible {
+  outline: 3px solid #ffd700;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.25);
+}
+
+/* Card gallery container */
 .card-container {
   display: flex;
-
+  flex-wrap: wrap;              /* allow wrapping */
+  justify-content: center;      /* center cards horizontally */
+  gap: 1em;                     /* uniform gap between cards */
+  padding: 2em;                 /* inner padding around gallery */
 }
 
 .card {
   perspective: 1000px;
-  width: 200px;
+  width: min(200px, 100% - 2rem); /* keep cards fluid on small screens */
   height: 300px;
-  margin: 50px;
+  margin: 0;                     /* use container gap instead of per-card margin */
 }
 
 .card-inner {
@@ -71,10 +146,40 @@ footer {
   color: #fff8dc; 
   transform: rotateY(180deg);
   display: flex;
-
+  flex-direction: column;        /* vertical layout */
+  align-items: center;           /* center horizontally */
+  justify-content: center;       /* center vertically */
+  padding: 1em;                  /* comfortable padding inside back face */
 }
 
 .card-back h2 {
   margin-bottom: 0.5em;
   color: #ffec8b; 
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .card-container {
+    gap: 0.9rem;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Stack nav links vertically on narrow screens */
+  .nav-list {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card-container {
+    gap: 0.8rem;
+    padding: 1rem;
+  }
+
+  .card {
+    width: 100%;            /* one card per row */
+    max-width: 420px;       /* prevent over-expansion */
+    height: 300px;          /* keep aspect reasonable for flip */
+  }
 }
