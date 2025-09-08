@@ -37,7 +37,7 @@ Repeat this structure for all the commands you executed during the lab.
 ---
 ## Screenshots Deliverables
 ### Deliverable 2: [Screenshot Description]
-![Screenshot 1 Description](Lab01/images/seneca.png)
+![Screenshot 1 Description](lab01/images/seneca.png)
 ### Deliverable 3: [Screenshot Description]
 ![Screenshot 3 Description](path-to-screenshot3.png)
 ---
