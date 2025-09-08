@@ -1,0 +1,8 @@
+# OS cruft
+.DS_Store
+**/.DS_Store
+Thumbs.db
+
+# Node/npm (if ever used)
+node_modules/
+
