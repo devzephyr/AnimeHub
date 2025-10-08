@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Middle-earth Legends - SRT205 Final Practical Test</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<script src="script.js" defer></script>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header>
+    <h1>Middle-earth Legends</h1>
+    <p><strong>WAS500 LAB05</strong></p>
+  </header>
+  <nav aria-label="Primary" role="navigation">
+    <ul class="nav-list">
+      <li><a href="#" aria-current="page">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+  <main id="main" class="main-container">
+    <section id="characters">
+      <div class="card" role="button" aria-label="Frodo Baggins">
+      <div class="card-inner">
+        <div class="card-front" style="background-image: url('images/frodo.png')"></div>
+        <div class="card-back">
+          <h2>Frodo Baggins</h2>
+          <p>Race: Hobbit</p>
+          <p>Class: Ring-bearer</p>
+          <p>Origin: The Shire</p>
+          <p>Specialty: Resistance to the Ring</p>
+        </div>
+      </div>
+      </div>
+      <div class="card" role="button" aria-label="Gimli">
+      <div class="card-inner">
+        <div class="card-front" style="background-image: url('images/gimli.png')"></div>
+        <div class="card-back">
+          <h2>Gimli</h2>
+          <p>Race: Dwarf</p>
+          <p>Class: Warrior</p>
+          <p>Origin: Erebor</p>
+          <p>Specialty: Strength, Endurance</p>
+        </div>
+      </div>
+      </div>
+      <div class="card" role="button" aria-label="Legolas">
+      <div class="card-inner">
+        <div class="card-front" style="background-image: url('images/legolas.png')"></div>
+        <div class="card-back">
+          <h2>Legolas</h2>
+          <p>Race: Elf</p>
+          <p>Class: Archer</p>
+          <p>Origin: Mirkwood</p>
+          <p>Specialty: Enhanced Agility, Keen Vision</p>
+        </div>
+      </div>
+      </div>
+
+      <div class="card" role="button" aria-label="Gandalf">
+      <div class="card-inner">
+        <div class="card-front" style="background-image: url('images/gandalf.png')"></div>
+        <div class="card-back">
+          <h2>Gandalf</h2>
+          <p>Race: Maia</p>
+          <p>Class: Wizard</p>
+          <p>Origin: Valinor</p>
+          <p>Specialty: Magic, Wisdom, Immortality</p>
+        </div>
+      </div>
+      </div>
+
+      <div class="card" role="button" aria-label="Aragorn">
+      <div class="card-inner">
+        <div class="card-front" style="background-image: url('images/aragorn.png')"></div>
+        <div class="card-back">
+          <h2>Aragorn</h2>
+          <p>Race: Human</p>
+          <p>Class: Ranger</p>
+          <p>Origin: Rivendell</p>
+          <p>Specialty: Leadership, Healing</p>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="quests-heading">
+      <h2 id="quests-heading">Available Quests</h2>
+      <ul id="taskList"></ul>
+      <label for="taskSelect" class="visually-hidden">Choose a quest</label>
+      <select id="taskSelect" name="taskSelect"></select>
+    </section>
+
+    <section aria-labelledby="confirm-heading">
+      <h2 id="confirm-heading">Quest Log</h2>
+      <p id="questLogText" aria-live="polite"></p>
+      <button id="confirmQuestBtn" type="button" class="siteBtn">Confirm Quest</button>
+    </section>
+
+    <!-- Lab05: Join the Fellowship Registration Form -->
+    <section aria-labelledby="join-heading">
+      <h2 id="join-heading">Join the Fellowship</h2>
+      <form id="joinForm" novalidate>
+        <!-- Name -->
+        <div class="form-field">
+          <label for="regName">Name</label>
+          <input id="regName" name="fullName" type="text" required minlength="2" aria-describedby="nameError" />
+          <p id="nameError" class="field-error" aria-live="polite"></p>
+        </div>
+
+        <!-- Email -->
+        <div class="form-field">
+          <label for="regEmail">Email</label>
+          <input id="regEmail" name="email" type="email" required aria-describedby="emailError" />
+          <p id="emailError" class="field-error" aria-live="polite"></p>
+        </div>
+
+        <!-- Password -->
+        <div class="form-field">
+          <label for="regPassword">Password</label>
+          <input
+            id="regPassword"
+            name="password"
+            type="password"
+            required
+            minlength="8"
+            pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}"
+            aria-describedby="passwordHelp passwordError"
+            title="At least 8 chars, with upper, lower, number, and special"
+          />
+          <p id="passwordHelp" class="assistive">Must include uppercase, lowercase, number, and special character.</p>
+          <p id="passwordError" class="field-error" aria-live="polite"></p>
+        </div>
+
+        <!-- Age -->
+        <div class="form-field">
+          <label for="regAge">Age</label>
+          <input id="regAge" name="age" type="number" required min="1" max="999" aria-describedby="ageError" />
+          <p id="ageError" class="field-error" aria-live="polite"></p>
+        </div>
+
+        <!-- Character Class -->
+        <div class="form-field">
+          <label for="regClass">Character Class</label>
+          <select id="regClass" name="characterClass" required aria-describedby="classError">
+            <option value="" selected disabled>— Select a class —</option>
+            <option>Hobbit</option>
+            <option>Elf</option>
+            <option>Dwarf</option>
+            <option>Human</option>
+            <option>Wizard</option>
+          </select>
+          <p id="classError" class="field-error" aria-live="polite"></p>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="siteBtn">Join</button>
+        </div>
+
+        <p id="joinSuccess" class="success-message" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Adeyemi Folarin</p>
+  </footer>
+</body>
+
+</html>
