@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Avengers | Join</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="container nav-container">
+        <div class="brand">⚡ Avengers</div>
+        <nav aria-label="Main navigation">
+          <ul class="nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="heroes.html">Heroes</a></li>
+            <li><a href="join.html" class="active" aria-current="page">Join</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="container">
+      <h1 class="page-title">Join the Avengers</h1>
+      <p class="page-intro">Think you’ve got what it takes? Tell us more.</p>
+
+      <section class="form-section">
+        <form id="join-form" novalidate aria-describedby="form-help">
+          <div id="form-help" class="sr-only">All fields are required unless marked optional.</div>
+
+          <div class="form-field">
+            <label for="fullName">Full Name</label>
+            <input id="fullName" name="fullName" type="text" autocomplete="name" required />
+            <p class="error" id="error-fullName" role="alert" aria-live="polite"></p>
+          </div>
+
+          <div class="form-field">
+            <label for="alias">Hero Alias</label>
+            <input id="alias" name="alias" type="text" required />
+            <p class="error" id="error-alias" role="alert" aria-live="polite"></p>
+          </div>
+
+          <div class="form-field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" required />
+            <p class="error" id="error-email" role="alert" aria-live="polite"></p>
+          </div>
+
+          <div class="form-field">
+            <label for="power">Power Type</label>
+            <select id="power" name="power" required>
+              <option value="">Select a power</option>
+              <option>Tech</option>
+              <option>Strength</option>
+              <option>Magic</option>
+              <option>Stealth</option>
+            </select>
+            <p class="error" id="error-power" role="alert" aria-live="polite"></p>
+          </div>
+
+          <div class="form-field">
+            <label for="motivation">Motivation</label>
+            <textarea id="motivation" name="motivation" rows="5" placeholder="Why do you want to join?" required></textarea>
+            <p class="hint">Minimum 20 characters.</p>
+            <p class="error" id="error-motivation" role="alert" aria-live="polite"></p>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn primary">Submit Application</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="quest-log" class="quest-log" aria-live="polite" aria-atomic="true">
+        <h2 class="section-title">Quest Log</h2>
+        <div id="quest-messages" class="messages" role="status"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <small>&copy; 2025 Adeyemi FOlarin</small>
+      </div>
+    </footer>
+
+    <script src="script.js" defer></script>
+  </body>
+  </html>
+
