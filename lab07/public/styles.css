@@ -1,5 +1,4 @@
 
-/* Base layout and typography */
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -102,6 +101,25 @@ nav {
   outline: 3px solid #ffd700;
   outline-offset: 2px;
   box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.25);
+}
+
+.content-page {
+  max-width: 720px;
+  margin: 2rem auto;
+  padding: 2rem 1.5rem;
+  background: rgba(48, 8, 58, 0.85);
+  border: 2px solid #ffd700;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+}
+
+.content-page h1 {
+  margin-top: 0;
+  color: #ffd700;
+}
+
+.content-page a {
+  color: #ffd700;
 }
 
 /* Main layout container (column oriented) */
@@ -309,4 +327,75 @@ nav {
 
 #questLogText {
   min-height: 1.5rem; /* reserve space to reduce layout shift */
+}
+
+/* ===== Lab05: Join Form Styles ===== */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin: 0.75rem 0;
+  width: min(100%, 560px);
+}
+
+.form-field label {
+  font-weight: 600;
+}
+
+.form-field input,
+.form-field select {
+  background: #30083a;
+  color: #ffec8b;
+  border: 2px solid #664169;
+  border-radius: 8px;
+  padding: 0.55rem 0.7rem;
+}
+
+.form-field input:focus-visible,
+.form-field select:focus-visible {
+  outline: 3px solid #ffd700;
+  outline-offset: 2px;
+}
+
+/* HTML5 validity states */
+.form-field input:invalid,
+.form-field select:invalid {
+  border-color: #ff6b6b;
+  background-color: rgba(255, 107, 107, 0.06);
+}
+
+.form-field input:valid,
+.form-field select:valid {
+  border-color: #7CFC00;
+  background-color: rgba(124, 252, 0, 0.06);
+}
+
+.field-error {
+  color: #ffb3b3;
+  min-height: 1.1rem;
+  margin: 0;
+}
+
+.assistive {
+  color: #c3a8cf;
+  font-size: 0.9rem;
+  margin: 0 0 0.15rem 0;
+}
+
+.form-actions {
+  margin-top: 0.75rem;
+}
+
+.form-status {
+  font-weight: 700;
+  margin-top: 0.5rem;
+  min-height: 1.2rem;
+}
+
+.form-status--success {
+  color: #7CFC00;
+}
+
+.form-status--error {
+  color: #ffb3b3;
 }
