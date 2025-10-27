@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Arondir The Elf",
+    "email": "arondir@palantir",
+    "age": 67,
+    "class": "Elf",
+    "date": "2025-10-11T03:44:20.712Z"
+  },
+  {
+    "name": "Saruman",
+    "email": "saruman@palantir.lotr",
+    "age": 265,
+    "class": "Wizard",
+    "date": "2025-10-16T00:40:33.639Z"
+  }
+]
