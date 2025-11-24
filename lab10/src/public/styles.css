@@ -1,0 +1,419 @@
+/* Gate of Moria — Frontend UI Styles */
+
+:root {
+    --bg-dark: #05070a;
+    --bg-light: #0f1620;
+
+    --panel-bg: rgba(14, 20, 27, 0.7);
+    --panel-border: rgba(87, 184, 255, 0.1);
+
+    --text-primary: #e6eef5;
+    --text-secondary: #94a3b8;
+
+    --accent-glow: #57b8ff;
+    --accent-primary: #0ea5e9;
+    --accent-secondary: #38bdf8;
+
+    --bubble-user-bg: rgba(14, 165, 233, 0.15);
+    --bubble-user-border: rgba(56, 189, 248, 0.2);
+
+    --bubble-ai-bg: rgba(15, 23, 42, 0.6);
+    --bubble-ai-border: rgba(148, 163, 184, 0.1);
+
+    --success: #10b981;
+    --error: #ef4444;
+
+    --font-heading: 'Cinzel', serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-body);
+    background-color: var(--bg-dark);
+    background-image:
+        radial-gradient(circle at 50% 0%, #1e293b 0%, transparent 50%),
+        radial-gradient(circle at 85% 30%, rgba(14, 165, 233, 0.1) 0%, transparent 40%);
+    color: var(--text-primary);
+    overflow: hidden;
+    /* Prevent body scroll, let app handle it */
+}
+
+#app {
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Header */
+.app-header {
+    padding: 20px 24px;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+}
+
+.app-header h1 {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 2.5rem;
+    background: linear-gradient(to bottom, #fff, #94a3b8);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(87, 184, 255, 0.3);
+    letter-spacing: 1px;
+}
+
+.app-header .tag {
+    margin: 8px 0 0;
+    color: var(--text-secondary);
+    font-style: italic;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+}
+
+/* Layout */
+.layout {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 24px;
+    padding: 0 24px 24px;
+    min-height: 0;
+    /* Important for nested scrolling */
+}
+
+@media (max-width: 900px) {
+    .layout {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+    }
+
+    .door-panel {
+        display: none;
+        /* Hide door on mobile to focus on chat, or make it smaller */
+    }
+
+    /* Optional: Show door on mobile but smaller? 
+       For now, let's hide it to prioritize chat or make it a small header item.
+       Actually, let's keep it but make it small. */
+    .door-panel {
+        display: flex;
+        height: 200px;
+    }
+
+    .door-svg {
+        max-height: 100%;
+        width: auto;
+    }
+}
+
+/* Panels (Glassmorphism) */
+.door-panel,
+.chat-panel {
+    background: var(--panel-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--panel-border);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+    position: relative;
+}
+
+/* Door Panel */
+.door-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.door-svg {
+    width: 100%;
+    max-width: 340px;
+    height: auto;
+    filter: drop-shadow(0 0 20px rgba(87, 184, 255, 0.1));
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+/* Chat Panel */
+.chat-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    scroll-behavior: smooth;
+}
+
+/* Scrollbar styling */
+.chat::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chat::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.chat::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Messages */
+.msg {
+    display: flex;
+    flex-direction: column;
+    max-width: 85%;
+    padding: 14px 18px;
+    border-radius: 16px;
+    line-height: 1.6;
+    font-size: 1rem;
+    position: relative;
+    animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.msg.user {
+    align-self: flex-end;
+    background: var(--bubble-user-bg);
+    border: 1px solid var(--bubble-user-border);
+    border-bottom-right-radius: 4px;
+    color: #fff;
+}
+
+.msg.ai {
+    align-self: flex-start;
+    background: var(--bubble-ai-bg);
+    border: 1px solid var(--bubble-ai-border);
+    border-bottom-left-radius: 4px;
+    color: var(--text-primary);
+}
+
+.msg .who {
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    opacity: 0.7;
+}
+
+.msg.user .who {
+    color: var(--accent-secondary);
+    align-self: flex-end;
+}
+
+.msg.ai .who {
+    color: var(--text-secondary);
+}
+
+/* Typing Indicator */
+.msg.typing {
+    padding: 16px 20px;
+}
+
+.dots {
+    display: flex;
+    gap: 6px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-glow);
+    animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.dot:nth-child(1) {
+    animation-delay: -0.32s;
+}
+
+.dot:nth-child(2) {
+    animation-delay: -0.16s;
+}
+
+@keyframes bounce {
+
+    0%,
+    80%,
+    100% {
+        transform: scale(0);
+    }
+
+    40% {
+        transform: scale(1);
+    }
+}
+
+/* Composer */
+.composer {
+    padding: 20px;
+    background: rgba(10, 15, 20, 0.4);
+    border-top: 1px solid var(--panel-border);
+    display: flex;
+    gap: 12px;
+}
+
+#prompt {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 14px 18px;
+    color: white;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+#prompt:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+    background: rgba(0, 0, 0, 0.5);
+}
+
+#sendBtn {
+    background: var(--accent-primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 0 24px;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+}
+
+#sendBtn:hover:not(:disabled) {
+    background: var(--accent-secondary);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(14, 165, 233, 0.4);
+}
+
+#sendBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Footer */
+.app-footer {
+    padding: 12px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    opacity: 0.6;
+}
+
+/* Door Open States */
+.door {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.door-svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 340px;
+    height: auto;
+    transition: opacity 0.8s ease, transform 6s ease-in-out;
+    filter: drop-shadow(0 0 20px rgba(87, 184, 255, 0.1));
+}
+
+/* Default state: Closed is visible, Open is hidden */
+#doorClosed {
+    opacity: 1;
+    z-index: 1;
+}
+
+#doorOpen {
+    opacity: 0;
+    z-index: 2;
+}
+
+/* Open state: Cross-fade */
+#door.open #doorClosed {
+    opacity: 0;
+}
+
+#door.open #doorOpen {
+    opacity: 1;
+    filter: drop-shadow(0 0 40px rgba(87, 184, 255, 0.6));
+}
+
+/* Floating animation (applied to both, but we need to handle the transform carefully with the centering) */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translate(-50%, -50%) translateY(0);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) translateY(-6px);
+    }
+}
+
+.door-svg {
+    animation: float 6s ease-in-out infinite;
+}

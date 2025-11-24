@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gate of Moria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <div id="app">
+        <header class="app-header">
+            <h1>Gate of Moria</h1>
+            <p class="tag">“Speak, friend, and enter.”</p>
+        </header>
+
+        <main class="layout">
+            <!-- Door Panel -->
+            <section class="door-panel">
+                <div id="door" class="door">
+                    <!-- Closed Door (default) -->
+                    <svg id="doorClosed" class="door-svg" viewBox="0 0 300 420" aria-label="Closed Doors of Durin"
+                        role="img">
+                        <defs>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
+                            <linearGradient id="panelGrad" x1="0" x2="0" y1="0" y2="1">
+                                <stop offset="0%" stop-color="#0d0f13" />
+                                <stop offset="100%" stop-color="#0a0c10" />
+                            </linearGradient>
+                        </defs>
+
+                        <!-- Door background -->
+                        <rect x="0" y="0" width="300" height="420" fill="url(#panelGrad)" rx="18" />
+
+                        <!-- Arch -->
+                        <path d="M20 280 A130 130 0 0 1 280 280 L280 400 L20 400 Z" fill="#0f131a" stroke="#1d2633"
+                            stroke-width="2" />
+
+                        <!-- Runes / decorations -->
+                        <g filter="url(#glow)">
+                            <path d="M40 300 A110 110 0 0 1 260 300" stroke="#57b8ff" stroke-width="1.2" fill="none" />
+                            <path d="M60 310 A90 90 0 0 1 240 310" stroke="#57b8ff" stroke-width="1.2" fill="none" />
+                            <circle cx="150" cy="225" r="26" stroke="#57b8ff" stroke-width="1.2" fill="none" />
+                            <text x="150" y="70" text-anchor="middle" font-family="'Cinzel', serif" font-size="12"
+                                fill="#9fd6ff">
+                                I am the Gatekeeper of Durin’s Door
+                            </text>
+                            <text x="150" y="88" text-anchor="middle" font-family="'Cinzel', serif" font-size="11"
+                                fill="#9fd6ff">
+                                Speak the answer to my riddle
+                            </text>
+                        </g>
+
+                        <!-- Closed seam -->
+                        <line x1="150" y1="120" x2="150" y2="390" stroke="#192230" stroke-width="2" />
+
+                        <!-- Star -->
+                        <g filter="url(#glow)" transform="translate(150,120)">
+                            <line x1="-6" y1="0" x2="6" y2="0" stroke="#9fd6ff" stroke-width="1" />
+                            <line x1="0" y1="-6" x2="0" y2="6" stroke="#9fd6ff" stroke-width="1" />
+                            <line x1="-4.5" y1="-4.5" x2="4.5" y2="4.5" stroke="#9fd6ff" stroke-width="1" />
+                            <line x1="4.5" y1="-4.5" x2="-4.5" y2="4.5" stroke="#9fd6ff" stroke-width="1" />
+                        </g>
+                    </svg>
+
+                    <!-- Open Door (hidden until success) -->
+                    <svg id="doorOpen" class="door-svg" viewBox="0 0 300 420" aria-label="Open Doors of Durin"
+                        role="img">
+                        <defs>
+                            <filter id="glow2">
+                                <feGaussianBlur stdDeviation="3.2" result="blur" />
+                                <feMerge>
+                                    <feMergeNode in="blur" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
+                            <radialGradient id="light" cx="50%" cy="40%" r="60%">
+                                <stop offset="0%" stop-color="#bfe7ff" />
+                                <stop offset="70%" stop-color="#6cc8ff" />
+                                <stop offset="100%" stop-color="#1a90ff" />
+                            </radialGradient>
+                        </defs>
+
+                        <!-- Radiant opening -->
+                        <rect x="0" y="0" width="300" height="420" fill="#071017" rx="18" />
+                        <rect x="60" y="50" width="180" height="320" rx="14" fill="url(#light)" opacity="0.16"
+                            filter="url(#glow2)" />
+
+                        <!-- Left and right door panels slightly swung -->
+                        <g>
+                            <rect x="24" y="90" width="112" height="280" rx="10" fill="#0f141b" stroke="#3a516d"
+                                stroke-width="2" />
+                            <rect x="164" y="90" width="112" height="280" rx="10" fill="#0f141b" stroke="#3a516d"
+                                stroke-width="2" />
+                            <g filter="url(#glow2)" opacity="0.9">
+                                <path d="M30 125 A95 95 0 0 1 136 125" stroke="#9fd6ff" stroke-width="1.4"
+                                    fill="none" />
+                                <path d="M170 125 A95 95 0 0 1 276 125" stroke="#9fd6ff" stroke-width="1.4"
+                                    fill="none" />
+                                <text x="150" y="70" text-anchor="middle" font-family="'Cinzel', serif" font-size="12"
+                                    fill="#c8ecff">
+                                    The Doors of Durin swing open
+                                </text>
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+            </section>
+
+            <!-- Chat Panel -->
+            <section class="chat-panel">
+                <div id="chat" class="chat" aria-live="polite" aria-label="Conversation"></div>
+                <form id="composer" class="composer" autocomplete="off">
+                    <input id="prompt" name="prompt" type="text"
+                        placeholder="Speak your answer... (try friend or mellon)" maxlength="500" required />
+                    <button id="sendBtn" type="submit" title="Send">Speak</button>
+                </form>
+            </section>
+        </main>
+
+        <footer class="app-footer">
+            <small>WAS500 • Week 10 Lab • Moria Gatekeeper Chatbot</small>
+        </footer>
+    </div>
+
+    <script src="script.js" defer></script>
+</body>
+
+</html>
