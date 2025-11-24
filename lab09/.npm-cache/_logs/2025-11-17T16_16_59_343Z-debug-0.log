@@ -1,0 +1,38 @@
+0 verbose cli /opt/homebrew/Cellar/node/25.1.0/bin/node /opt/homebrew/bin/npm
+1 info using npm@11.6.2
+2 info using node@v25.1.0
+3 silly config load:file:/opt/homebrew/lib/node_modules/npm/npmrc
+4 silly config load:file:/Users/zizzle/Documents/was500/WAS500-LABS/lab09/.npmrc
+5 silly config load:file:/Users/zizzle/.npmrc
+6 silly config load:file:/opt/homebrew/etc/npmrc
+7 verbose title npm install
+8 verbose argv "install"
+9 verbose logfile logs-max:10 dir:/Users/zizzle/Documents/was500/WAS500-LABS/lab09/.npm-cache/_logs/2025-11-17T16_16_59_343Z-
+10 verbose logfile /Users/zizzle/Documents/was500/WAS500-LABS/lab09/.npm-cache/_logs/2025-11-17T16_16_59_343Z-debug-0.log
+11 silly logfile done cleaning log files
+12 silly packumentCache heap:4496293888 maxSize:1124073472 maxEntrySize:562036736
+13 verbose stack JSONParseError: Invalid package.json: JSONParseError: Expected double-quoted property name in JSON at position 279 (line 10 column 3) while parsing near "...n src/server.js\",\n  },\n  \"keywords\": [\n ..."
+13 verbose stack     at parse (/opt/homebrew/lib/node_modules/npm/node_modules/@npmcli/package-json/lib/read-package.js:19:21)
+13 verbose stack     at PackageJson.fromJSON (/opt/homebrew/lib/node_modules/npm/node_modules/@npmcli/package-json/lib/index.js:162:22)
+13 verbose stack     at PackageJson.load (/opt/homebrew/lib/node_modules/npm/node_modules/@npmcli/package-json/lib/index.js:157:17)
+13 verbose stack     at async PackageJson.normalize (/opt/homebrew/lib/node_modules/npm/node_modules/@npmcli/package-json/lib/index.js:117:5)
+13 verbose stack     at async #initTree (/opt/homebrew/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arborist/build-ideal-tree.js:284:34)
+13 verbose stack     at async Arborist.buildIdealTree (/opt/homebrew/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arborist/build-ideal-tree.js:179:7)
+13 verbose stack     at async Promise.all (index 1)
+13 verbose stack     at async Arborist.reify (/opt/homebrew/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arborist/reify.js:114:5)
+13 verbose stack     at async Install.exec (/opt/homebrew/lib/node_modules/npm/lib/commands/install.js:150:5)
+13 verbose stack     at async Npm.exec (/opt/homebrew/lib/node_modules/npm/lib/npm.js:208:9)
+14 error code EJSONPARSE
+15 error JSON.parse Invalid package.json: JSONParseError: Expected double-quoted property name in JSON at position 279 (line 10 column 3) while parsing near "...n src/server.js\",\n  },\n  \"keywords\": [\n ..."
+16 error JSON.parse Failed to parse JSON data.
+16 error JSON.parse Note: package.json must be actual JSON, not just JavaScript.
+17 silly unfinished npm timer reify 1763396219608
+18 silly unfinished npm timer reify:loadTrees 1763396219608
+19 silly unfinished npm timer idealTree:init 1763396219609
+20 verbose cwd /Users/zizzle/Documents/was500/WAS500-LABS/lab09
+21 verbose os Darwin 25.2.0
+22 verbose node v25.1.0
+23 verbose npm  v11.6.2
+24 verbose exit 1
+25 verbose code 1
+26 error A complete log of this run can be found in: /Users/zizzle/Documents/was500/WAS500-LABS/lab09/.npm-cache/_logs/2025-11-17T16_16_59_343Z-debug-0.log
