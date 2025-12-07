@@ -1,0 +1,55 @@
+
+> anime-hub-server@1.0.0 dev
+> nodemon app.js
+
+[33m[nodemon] 3.1.11[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching path(s): *.*[39m
+[33m[nodemon] watching extensions: js,mjs,cjs,json[39m
+[32m[nodemon] starting `node app.js`[39m
+[dotenv@17.2.3] injecting env (6) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+Server running in development mode on port 5001
+MongoDB Connected: localhost
+[0mPOST /api/auth/login [32m200[0m 94.047 ms - 412[0m
+[0mGET /api/titles/top-rated?limit=6 [32m200[0m 10.299 ms - 26[0m
+[0mGET /api/titles/top-rated?limit=6 [36m304[0m 2.907 ms - -[0m
+[0mGET /api/titles?limit=6&sort=-createdAt [32m200[0m 13.559 ms - 3549[0m
+[0mGET /api/titles?limit=6&sort=-createdAt [36m304[0m 2.494 ms - -[0m
+[0mGET /api/titles?page=1&limit=20&sort=-createdAt [32m200[0m 14.976 ms - 5794[0m
+[0mGET /api/titles?page=1&limit=20&sort=-createdAt [36m304[0m 2.446 ms - -[0m
+[0mGET /api/auth/me [32m200[0m 19.615 ms - 221[0m
+[0mGET /api/titles/genres [32m200[0m 21.543 ms - 178[0m
+[0mGET /api/titles/genres [36m304[0m 2.346 ms - -[0m
+[0mGET /api/auth/me [36m304[0m 5.897 ms - -[0m
+[0mGET /api/auth/me [36m304[0m 2.437 ms - -[0m
+[0mGET /api/auth/me [36m304[0m 2.438 ms - -[0m
+[0mGET /api/watchlist/stats [32m200[0m 10.734 ms - 93[0m
+[0mGET /api/watchlist/stats [36m304[0m 7.285 ms - -[0m
+[0mGET /api/watchlist [32m200[0m 24.070 ms - 1280[0m
+[0mGET /api/watchlist [36m304[0m 3.176 ms - -[0m
+[0mGET /api/auth/me [36m304[0m 3.542 ms - -[0m
+[0mGET /api/auth/me [36m304[0m 4.012 ms - -[0m
+[0mGET /api/watchlist/stats [36m304[0m 3.467 ms - -[0m
+[0mGET /api/watchlist/stats [36m304[0m 5.202 ms - -[0m
+[0mGET /api/watchlist/stats [36m304[0m 1.924 ms - -[0m
+[0mGET /api/reviews?userId=6924dba89bff4afabd19f121&limit=5 [32m200[0m 17.366 ms - 1396[0m
+[0mGET /api/reviews?userId=6924dba89bff4afabd19f121&limit=5 [36m304[0m 4.218 ms - -[0m
+[0mGET /api/reviews?userId=6924dba89bff4afabd19f121&limit=5 [36m304[0m 3.673 ms - -[0m
+[0mGET /api/titles/top-rated?limit=6 [36m304[0m 2.435 ms - -[0m
+[0mGET /api/titles?limit=6&sort=-createdAt [32m200[0m 2.333 ms - 3549[0m
+[0mGET /api/auth/me [32m200[0m 2.383 ms - 219[0m
+[0mGET /api/titles/top-rated?limit=6 [36m304[0m 1.747 ms - -[0m
+[0mGET /api/titles?limit=6&sort=-createdAt [36m304[0m 2.475 ms - -[0m
+[0mGET /api/auth/me [36m304[0m 2.795 ms - -[0m
+[0mGET /api/titles/genres [36m304[0m 1.818 ms - -[0m
+[0mGET /api/titles?page=1&limit=20&sort=-createdAt [32m200[0m 2.640 ms - 5794[0m
+[0mGET /api/titles/genres [36m304[0m 1.575 ms - -[0m
+[0mGET /api/titles?page=1&limit=20&sort=-createdAt [36m304[0m 2.544 ms - -[0m
+[0mGET /api/watchlist/stats [32m200[0m 1.898 ms - 49[0m
+[0mGET /api/watchlist [32m200[0m 6.533 ms - 247[0m
+[0mGET /api/watchlist/stats [36m304[0m 2.469 ms - -[0m
+[0mGET /api/watchlist [36m304[0m 2.160 ms - -[0m
+[0mGET /api/reviews?userId=6924dba89bff4afabd19f120&limit=5 [32m200[0m 2.488 ms - 80[0m
+[0mGET /api/watchlist/stats [36m304[0m 4.232 ms - -[0m
+[0mGET /api/reviews?userId=6924dba89bff4afabd19f120&limit=5 [36m304[0m 2.979 ms - -[0m
+[0mGET /api/watchlist/stats [36m304[0m 4.360 ms - -[0m
