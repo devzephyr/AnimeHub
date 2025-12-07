@@ -1,0 +1,12 @@
+{
+    "name": "scripts",
+    "version": "1.0.0",
+    "description": "Helper scripts",
+    "main": "take_screenshots.js",
+    "scripts": {
+        "screenshots": "node take_screenshots.js"
+    },
+    "dependencies": {
+        "puppeteer": "^23.0.0"
+    }
+}
