@@ -1,8 +1,8 @@
 # Assignment 02: Anime/Movie Recommendation Hub
 
-**Course**: SRT551 - Full Stack Web Development  
-**Student**: [Your Name]  
-**Date**: [Submission Date]
+**Course**: WAS500 - Full Stack Web App  
+**Student**: Adeyemi Folarin
+**Date**: December 7, 2025
 
 ---
 
@@ -35,54 +35,12 @@ AnimeHub is a full-stack web application for discovering, tracking, and reviewin
 
 ### System Architecture
 
-```
-┌─────────────────┐     HTTP/REST      ┌─────────────────┐     Mongoose     ┌─────────────────┐
-│                 │ ◄──────────────────►│                 │ ◄───────────────►│                 │
-│  React Client   │     JSON + JWT      │  Express API    │                  │    MongoDB      │
-│  (Port 5173)    │                     │  (Port 5000)    │                  │                 │
-└─────────────────┘                     └─────────────────┘                  └─────────────────┘
-```
+![System Architecture](screenshots/system-architecture.png)
 
 ---
 
 ## 3. Data Model (ERD)
-
-```
-┌───────────────────┐       ┌───────────────────┐
-│       USERS       │       │      TITLES       │
-├───────────────────┤       ├───────────────────┤
-│ _id: ObjectId     │       │ _id: ObjectId     │
-│ email: String     │       │ name: String      │
-│ passwordHash: Str │       │ type: String      │
-│ username: String  │       │ genres: [String]  │
-│ role: String      │       │ year: Number      │
-│ avatar: String    │       │ synopsis: String  │
-│ createdAt: Date   │       │ poster: String    │
-└────────┬──────────┘       │ episodes: Number  │
-         │                  │ status: String    │
-         │                  │ studio: String    │
-         │                  │ rating: {avg,cnt} │
-         │                  │ createdBy: ObjId  │
-         │                  └────────┬──────────┘
-         │                           │
-         │    ┌──────────────────────┼──────────────────────┐
-         │    │                      │                      │
-         ▼    ▼                      ▼                      │
-┌───────────────────┐       ┌───────────────────┐           │
-│     REVIEWS       │       │    WATCHLISTS     │           │
-├───────────────────┤       ├───────────────────┤           │
-│ _id: ObjectId     │       │ _id: ObjectId     │           │
-│ userId: ObjectId  │───┐   │ userId: ObjectId  │───────────┘
-│ titleId: ObjectId │───┼──►│ items: [{        │
-│ rating: Number    │   │   │   titleId: ObjId │
-│ text: String      │   │   │   status: String │
-│ likes: Number     │   │   │   progress: Num  │
-│ createdAt: Date   │   │   │   addedAt: Date  │
-└───────────────────┘   │   │ }]               │
-                        │   └───────────────────┘
-                        │
-              Foreign Key References
-```
+![ERD](screenshots/ERD.png)
 
 ### Relationships
 
@@ -106,7 +64,8 @@ AnimeHub is a full-stack web application for discovering, tracking, and reviewin
 
 ### Base URL
 ```
-http://localhost:5000/api
+Development: http://localhost:5001/api
+Production: https://animehub-0o1j.onrender.com/api
 ```
 
 ### Authentication
@@ -171,8 +130,6 @@ Authorization: Bearer <jwt_token>
 
 ## 5. Screenshots
 
-
-
 ### Home Page
 ![Home Page](screenshots/home.png)
 *Landing page with top-rated and recently added titles*
@@ -195,7 +152,34 @@ Authorization: Bearer <jwt_token>
 
 ---
 
-## 6. Setup Instructions
+## 6. API Testing & Verification
+
+The API was tested using Postman. Below are the results for key endpoints.
+
+### Authentication Tests
+*Endpoint: POST /api/auth/login*
+![Login Test](screenshots/postman-login.png)
+
+### Title Management Tests
+*Endpoint: GET /api/titles*
+![Get Titles Test](screenshots/postman-get-titles.png)
+
+*Endpoint: POST /api/titles (Admin Only)*
+![Create Title Test](screenshots/postman-create-title.png)
+
+### Review System Tests
+*Endpoint: POST /api/reviews*
+![Create Review Test](screenshots/postman-create-review.png)
+
+### Watchlist Tests
+*Endpoint: GET /api/watchlist*
+![Get Watchlist Test](screenshots/postman-get-watchlist.png)
+
+
+---
+
+## 7. Setup Instructions
+
 
 ### Prerequisites
 - Node.js 18+
@@ -253,7 +237,8 @@ Client runs at: http://localhost:5173
 
 ---
 
-## 7. Project Structure
+## 8. Project Structure
+
 
 ```
 assignment02/
@@ -315,7 +300,8 @@ assignment02/
 
 ---
 
-## 8. Reflection
+## 9. Reflection
+
 
 ### Challenges Faced
 
@@ -338,12 +324,25 @@ assignment02/
 - Add image upload for user avatars and title posters
 - Implement real-time notifications for new reviews
 - Add social features (following users, activity feed)
-- Deploy to cloud platform (Vercel + Railway/Render)
 - Add recommendation engine based on user preferences
+
 
 ---
 
-## 9. References
+## 10. Bonus: Live Deployment
+
+The application has been successfully deployed and is accessible at:
+
+| Component | URL | Status |
+|-----------|-----|--------|
+| **Frontend** | [https://anime-hub-one.vercel.app](https://anime-hub-one.vercel.app) | 🟢 Live |
+| **Backend API** | [https://animehub-0o1j.onrender.com](https://animehub-0o1j.onrender.com) | 🟢 Live |
+
+---
+
+## 11. References
+
+
 
 - [Express.js Documentation](https://expressjs.com/)
 - [Mongoose Documentation](https://mongoosejs.com/docs/)
@@ -353,9 +352,10 @@ assignment02/
 
 ---
 
-## 10. Declaration
+## 12. Declaration
+
 
 I declare that this submission is my own work and that all sources used have been properly acknowledged. I understand that plagiarism and collusion are serious academic offenses.
 
-**Signature**: _______________  
-**Date**: _______________
+**Signature**: Adeyemi Folarin  
+**Date**: 2025-12-07
