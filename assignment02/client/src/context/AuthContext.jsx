@@ -3,6 +3,7 @@ import { authAPI } from '../services/api';
 
 const AuthContext = createContext(null);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -27,7 +28,7 @@ export const AuthProvider = ({ children }) => {
           // Verify token is still valid
           const response = await authAPI.getMe();
           setUser(response.data.data);
-        } catch (err) {
+        } catch {
           // Token invalid, clear storage
           localStorage.removeItem('token');
           localStorage.removeItem('user');

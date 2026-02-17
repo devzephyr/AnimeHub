@@ -30,6 +30,7 @@ const Profile = () => {
       setFormData({ username: user.username, avatar: user.avatar || '' });
       fetchUserData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const fetchUserData = async () => {
@@ -98,7 +99,7 @@ const Profile = () => {
     }
   };
 
-  if (!user) return <Loading message="Loading profile..." />;
+  if (!user || loading) return <Loading message="Loading profile..." />;
 
   return (
     <div className="profile-page">

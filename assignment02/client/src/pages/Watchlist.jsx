@@ -23,6 +23,7 @@ const Watchlist = () => {
   useEffect(() => {
     fetchWatchlist();
     fetchStats();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
 
   const fetchWatchlist = async () => {
