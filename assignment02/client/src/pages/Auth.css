@@ -3,16 +3,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem 1rem;
+  padding: 2rem 20px;
 }
 
 .auth-container {
-  background: var(--surface);
-  padding: 2.5rem;
+  background: color-mix(in oklab, var(--surface) 50%, transparent);
+  border: 1px solid color-mix(in oklab, var(--line) 20%, transparent);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
   border-radius: 12px;
   width: 100%;
   max-width: 400px;
-  border: 1px solid var(--border);
 }
 
 .auth-container h1 {
@@ -20,24 +21,25 @@
   margin-bottom: 0.5rem;
   color: var(--text);
   font-size: 1.5rem;
+  font-weight: 400;
 }
 
 .auth-subtitle {
   text-align: center;
   color: var(--text-muted);
   margin-bottom: 2rem;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
 }
 
 .auth-error {
-  background: rgba(239, 68, 68, 0.08);
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  background: color-mix(in oklab, var(--red) 10%, transparent);
+  border: 1px solid color-mix(in oklab, var(--red) 20%, transparent);
   color: var(--error);
   padding: 0.75rem 1rem;
   border-radius: 8px;
   margin-bottom: 1.5rem;
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
 }
 
 .auth-form {
@@ -49,80 +51,91 @@
 .auth-form .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 4px;
 }
 
 .auth-form label {
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-muted);
-  font-size: 0.9rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
 }
 
 .auth-form input {
-  padding: 0.75rem 1rem;
-  background: var(--background);
-  border: 1px solid var(--border);
+  padding: 0 1rem;
+  height: 42px;
+  background: var(--surface-light);
+  border: 1px solid #424141;
   border-radius: 8px;
-  color: var(--text);
-  font-size: 0.95rem;
+  color: var(--text-muted);
+  font-size: 1rem;
+  outline: none;
   transition: border-color 0.2s;
 }
 
+.auth-form input:hover,
 .auth-form input:focus {
-  outline: none;
-  border-color: var(--primary);
+  border-color: #525252;
 }
 
 .auth-form input::placeholder {
-  color: var(--text-dark);
+  color: color-mix(in oklab, var(--text-muted) 80%, transparent);
 }
 
 .field-error {
   color: var(--error);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
 }
 
 .btn-auth {
   background: var(--primary);
-  color: #fff;
-  border: none;
-  padding: 0.8rem;
+  border: 1px solid var(--primary);
+  color: var(--text);
+  padding: 0.5rem 1rem;
   border-radius: 8px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 400;
   cursor: pointer;
-  transition: background 0.2s;
+  height: 42px;
   margin-top: 0.5rem;
+  transition: transform 0.1s ease-in-out;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 .btn-auth:hover:not(:disabled) {
-  background: var(--primary-dark);
+  opacity: 0.9;
+}
+
+.btn-auth:active:not(:disabled) {
+  transform: scale(0.99);
 }
 
 .btn-auth:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+  opacity: 0.7;
+  pointer-events: none;
 }
 
 .auth-switch {
   text-align: center;
   margin-top: 1.5rem;
   color: var(--text-muted);
-  font-size: 0.9rem;
+  font-size: 0.875rem;
 }
 
 .auth-switch a {
-  color: var(--primary);
-  text-decoration: none;
-  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--primary) 50%, transparent);
+  text-underline-offset: 4px;
 }
 
 .auth-switch a:hover {
-  text-decoration: underline;
+  color: var(--text);
+  text-decoration-color: var(--primary);
 }
 
 @media (max-width: 480px) {
   .auth-container {
-    padding: 2rem 1.5rem;
+    padding: 1.5rem;
   }
 }

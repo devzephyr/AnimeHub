@@ -1,7 +1,7 @@
 .home {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 20px;
 }
 
 .hero {
@@ -11,16 +11,18 @@
 }
 
 .hero h1 {
-  font-size: 2.5rem;
+  font-size: 3.75rem;
   margin-bottom: 0.75rem;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--text);
+  line-height: 1;
 }
 
 .hero p {
-  font-size: 1.1rem;
+  font-size: 1.125rem;
   color: var(--text-muted);
   margin-bottom: 1.5rem;
+  line-height: 1.55;
 }
 
 .hero-actions {
@@ -31,60 +33,79 @@
 
 .btn-primary {
   background: var(--primary);
-  color: #fff;
-  padding: 0.65rem 1.5rem;
+  border: 1px solid var(--primary);
+  color: var(--text);
+  padding: 0.5rem 1rem;
   border-radius: 8px;
   text-decoration: none;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: all 0.2s;
+  font-weight: 400;
+  font-size: 1rem;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.1s ease-in-out;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 .btn-primary:hover {
-  background: var(--primary-dark);
-  color: #fff;
+  opacity: 0.9;
+  color: var(--text);
+}
+
+.btn-primary:active {
+  transform: scale(0.99);
 }
 
 .btn-secondary {
-  background: transparent;
-  color: var(--text-muted);
-  padding: 0.65rem 1.5rem;
-  border: 1px solid var(--border);
+  background: var(--secondary);
+  border: 1px solid transparent;
+  color: var(--text);
+  padding: 0.5rem 1rem;
   border-radius: 8px;
   text-decoration: none;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: all 0.2s;
+  font-weight: 400;
+  font-size: 1rem;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.1s ease-in-out;
 }
 
 .btn-secondary:hover {
-  background: var(--surface-light);
+  opacity: 0.9;
   color: var(--text);
-  border-color: var(--text-muted);
+}
+
+.btn-secondary:active {
+  transform: scale(0.99);
 }
 
 .section {
-  margin: 2.5rem 0;
+  margin-bottom: 48px;
 }
 
 .section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 12px;
 }
 
 .section-header h2 {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 1.5rem;
+  font-weight: 400;
   color: var(--text);
+  line-height: 2rem;
 }
 
 .view-all {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   color: var(--text-muted);
   text-decoration: none;
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   transition: color 0.2s;
 }
 
@@ -94,22 +115,22 @@
 
 .title-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, 180px);
+  gap: 32px 16px;
 }
 
 .features {
   text-align: center;
   padding: 2.5rem 0;
   margin: 2rem 0;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid color-mix(in oklab, var(--line) 20%, transparent);
 }
 
 .features h2 {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
   color: var(--text);
-  font-weight: 700;
+  font-weight: 400;
 }
 
 .features > p {
@@ -124,15 +145,16 @@
 }
 
 .feature {
-  background: var(--surface);
-  padding: 1.5rem;
+  background: color-mix(in oklab, var(--surface) 50%, transparent);
+  padding: 1rem;
   border-radius: 12px;
-  border: 1px solid var(--border);
+  border: 1px solid color-mix(in oklab, var(--line) 20%, transparent);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   transition: border-color 0.2s;
 }
 
 .feature:hover {
-  border-color: var(--text-dark);
+  border-color: color-mix(in oklab, var(--line) 40%, transparent);
 }
 
 .feature-icon {
@@ -145,11 +167,12 @@
   color: var(--text);
   margin-bottom: 0.4rem;
   font-size: 1rem;
+  font-weight: 600;
 }
 
 .feature p {
   color: var(--text-muted);
-  font-size: 0.9rem;
+  font-size: 0.875rem;
 }
 
 .error-container {
@@ -160,23 +183,25 @@
 
 .error-container button {
   margin-top: 1rem;
-  background: var(--surface-light);
+  background: var(--secondary);
   color: var(--text);
-  border: 1px solid var(--border);
+  border: 1px solid transparent;
   padding: 0.5rem 1rem;
   border-radius: 8px;
   cursor: pointer;
+  height: 42px;
 }
 
 @media (max-width: 1024px) {
   .title-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fill, 160px);
   }
 }
 
 @media (max-width: 768px) {
   .hero h1 {
-    font-size: 1.8rem;
+    font-size: 1.875rem;
+    line-height: 1.2;
   }
 
   .hero p {
@@ -189,13 +214,14 @@
   }
 
   .title-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, 140px);
+    gap: 24px 12px;
   }
 }
 
 @media (max-width: 480px) {
   .title-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 16px 12px;
   }
 }

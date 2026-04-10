@@ -1,7 +1,7 @@
 .watchlist-page {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 2rem 20px;
 }
 
 .watchlist-header {
@@ -9,9 +9,10 @@
 }
 
 .watchlist-header h1 {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   margin-bottom: 0.75rem;
-  font-weight: 700;
+  font-weight: 400;
+  color: var(--text);
 }
 
 .watchlist-stats {
@@ -19,7 +20,7 @@
   flex-wrap: wrap;
   gap: 1rem;
   color: var(--text-muted);
-  font-size: 0.85rem;
+  font-size: 0.875rem;
 }
 
 .stat-total {
@@ -33,39 +34,39 @@
   gap: 0.5rem;
   margin-bottom: 1.5rem;
   padding: 0.75rem;
-  background: var(--surface);
-  border-radius: 10px;
-  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--surface) 50%, transparent);
+  border-radius: 12px;
+  border: 1px solid color-mix(in oklab, var(--line) 20%, transparent);
 }
 
 .filter-btn {
   background: transparent;
-  border: 1px solid var(--border);
+  border: 1px solid transparent;
   color: var(--text-muted);
-  padding: 0.4rem 0.9rem;
+  padding: 0.375rem 0.75rem;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
 }
 
 .filter-btn:hover {
-  border-color: var(--text-muted);
+  background: var(--surface-light);
   color: var(--text);
 }
 
 .filter-btn.active {
   background: var(--primary);
   border-color: var(--primary);
-  color: #fff;
+  color: var(--text);
 }
 
 .empty-watchlist {
   text-align: center;
   padding: 3rem 2rem;
-  background: var(--surface);
+  background: color-mix(in oklab, var(--surface) 50%, transparent);
   border-radius: 12px;
-  border: 1px solid var(--border);
+  border: 1px solid color-mix(in oklab, var(--line) 20%, transparent);
   color: var(--text-muted);
 }
 
@@ -76,13 +77,22 @@
 
 .btn-browse {
   background: var(--primary);
-  color: #fff;
-  padding: 0.6rem 1.25rem;
+  border: 1px solid var(--primary);
+  color: var(--text);
+  padding: 0.5rem 1rem;
   border-radius: 8px;
   text-decoration: none;
-  font-weight: 600;
-  display: inline-block;
-  font-size: 0.9rem;
+  font-weight: 400;
+  display: inline-flex;
+  align-items: center;
+  font-size: 1rem;
+  height: 42px;
+  transition: transform 0.1s ease-in-out;
+}
+
+.btn-browse:hover {
+  opacity: 0.9;
+  color: var(--text);
 }
 
 .watchlist-grid {
@@ -94,21 +104,22 @@
 .watchlist-item {
   display: flex;
   gap: 1.25rem;
-  background: var(--surface);
+  background: color-mix(in oklab, var(--surface) 50%, transparent);
   padding: 0.75rem;
-  border-radius: 10px;
-  border: 1px solid var(--border);
+  border-radius: 12px;
+  border: 1px solid color-mix(in oklab, var(--line) 20%, transparent);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   transition: border-color 0.2s;
 }
 
 .watchlist-item:hover {
-  border-color: var(--text-dark);
+  border-color: color-mix(in oklab, var(--line) 40%, transparent);
 }
 
 .item-poster {
   flex-shrink: 0;
   width: 90px;
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: hidden;
 }
 
@@ -117,6 +128,7 @@
   height: 135px;
   object-fit: cover;
   display: block;
+  border-radius: 8px;
 }
 
 .item-details {
@@ -140,16 +152,17 @@
 .item-meta {
   display: flex;
   gap: 0.75rem;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
 }
 
 .item-type {
   background: var(--surface-light);
-  padding: 0.1rem 0.4rem;
-  border-radius: 4px;
+  padding: 0 0.4rem;
+  border-radius: 6px;
   text-transform: capitalize;
   font-size: 0.75rem;
+  line-height: 1.5;
 }
 
 .item-rating {
@@ -164,39 +177,41 @@
 }
 
 .status-select {
-  background: var(--background);
-  border: 1px solid var(--border);
-  color: var(--text);
-  padding: 0.35rem 0.6rem;
-  border-radius: 6px;
+  background: var(--surface-light);
+  border: 1px solid #424141;
+  color: var(--text-muted);
+  padding: 0 0.6rem;
+  height: 32px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 0.8rem;
+  font-size: 0.875rem;
+  outline: none;
 }
 
+.status-select:hover,
 .status-select:focus {
-  outline: none;
-  border-color: var(--primary);
+  border-color: #525252;
 }
 
 .btn-remove {
   background: transparent;
-  border: 1px solid var(--border);
+  border: 1px solid color-mix(in oklab, var(--line) 20%, transparent);
   color: var(--text-muted);
-  width: 30px;
-  height: 30px;
-  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   font-size: 1rem;
+  padding: 0;
   transition: all 0.2s;
 }
 
 .btn-remove:hover {
   background: var(--error);
   border-color: var(--error);
-  color: #fff;
+  color: var(--text);
 }
 
 .btn-remove .material-symbols-outlined {
@@ -204,7 +219,7 @@
 }
 
 .progress-info {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--success);
 }
 
@@ -218,7 +233,7 @@
   text-align: center;
   padding: 1rem;
   color: var(--error);
-  background: rgba(239, 68, 68, 0.08);
+  background: color-mix(in oklab, var(--red) 10%, transparent);
   border-radius: 8px;
   margin-bottom: 1rem;
 }
