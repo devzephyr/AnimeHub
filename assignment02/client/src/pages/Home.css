@@ -6,160 +6,177 @@
 
 .hero {
   text-align: center;
-  padding: 4rem 2rem;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-  border-radius: 15px;
-  margin: 2rem 0;
+  padding: 3rem 2rem;
+  margin: 1.5rem 0 2rem;
 }
 
 .hero h1 {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  background: linear-gradient(90deg, #e94560, #ff6b6b);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 800;
+  color: var(--text);
 }
 
 .hero p {
-  font-size: 1.2rem;
-  color: #888;
-  margin-bottom: 2rem;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
 }
 
 .hero-actions {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
   justify-content: center;
 }
 
 .btn-primary {
-  background: #e94560;
+  background: var(--primary);
   color: #fff;
-  padding: 0.8rem 2rem;
+  padding: 0.65rem 1.5rem;
   border-radius: 8px;
   text-decoration: none;
   font-weight: 600;
+  font-size: 0.95rem;
   transition: all 0.2s;
 }
 
 .btn-primary:hover {
-  background: #d63050;
+  background: var(--primary-dark);
   color: #fff;
 }
 
 .btn-secondary {
   background: transparent;
-  color: #e94560;
-  padding: 0.8rem 2rem;
-  border: 2px solid #e94560;
+  color: var(--text-muted);
+  padding: 0.65rem 1.5rem;
+  border: 1px solid var(--border);
   border-radius: 8px;
   text-decoration: none;
   font-weight: 600;
+  font-size: 0.95rem;
   transition: all 0.2s;
 }
 
 .btn-secondary:hover {
-  background: #e94560;
-  color: #fff;
+  background: var(--surface-light);
+  color: var(--text);
+  border-color: var(--text-muted);
 }
 
 .section {
-  margin: 3rem 0;
+  margin: 2.5rem 0;
 }
 
 .section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .section-header h2 {
-  font-size: 1.5rem;
-  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
 }
 
 .view-all {
-  color: #e94560;
+  color: var(--text-muted);
   text-decoration: none;
   font-weight: 500;
+  font-size: 0.9rem;
+  transition: color 0.2s;
 }
 
 .view-all:hover {
-  text-decoration: underline;
+  color: var(--text);
 }
 
 .title-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1.25rem;
 }
 
 .features {
   text-align: center;
-  padding: 3rem 0;
-  margin: 3rem 0;
-  border-top: 1px solid #1a1a2e;
+  padding: 2.5rem 0;
+  margin: 2rem 0;
+  border-top: 1px solid var(--border);
 }
 
 .features h2 {
-  font-size: 2rem;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+  font-weight: 700;
+}
+
+.features > p {
+  color: var(--text-muted);
   margin-bottom: 2rem;
-  color: #fff;
 }
 
 .features-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 .feature {
-  background: #1a1a2e;
-  padding: 2rem;
-  border-radius: 10px;
-  transition: transform 0.2s;
+  background: var(--surface);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  transition: border-color 0.2s;
 }
 
 .feature:hover {
-  transform: translateY(-5px);
+  border-color: var(--text-dark);
 }
 
 .feature-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
   display: block;
 }
 
 .feature h3 {
-  color: #e94560;
-  margin-bottom: 0.5rem;
+  color: var(--text);
+  margin-bottom: 0.4rem;
+  font-size: 1rem;
 }
 
 .feature p {
-  color: #888;
+  color: var(--text-muted);
+  font-size: 0.9rem;
 }
 
 .error-container {
   text-align: center;
   padding: 3rem;
-  color: #e94560;
+  color: var(--error);
 }
 
 .error-container button {
   margin-top: 1rem;
-  background: #e94560;
-  color: #fff;
-  border: none;
+  background: var(--surface-light);
+  color: var(--text);
+  border: 1px solid var(--border);
   padding: 0.5rem 1rem;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+  .title-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
   .hero h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 
   .hero p {
@@ -168,8 +185,16 @@
 
   .hero-actions {
     flex-direction: column;
+    align-items: center;
   }
 
+  .title-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
   .title-grid {
     grid-template-columns: repeat(2, 1fr);
   }
