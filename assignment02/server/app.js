@@ -70,6 +70,26 @@ app.post('/api/seed', async (req, res) => {
   }
 });
 
+// Seed from Jikan/MAL endpoint (protected by SEED_SECRET)
+app.post('/api/seed/jikan', async (req, res) => {
+  const { secret, pages = 10 } = req.body;
+  if (!process.env.SEED_SECRET || secret !== process.env.SEED_SECRET) {
+    return res.status(403).json({ success: false, message: 'Invalid seed secret' });
+  }
+  try {
+    const { pool } = require('./config/db');
+    // Get admin user to set as creator
+    const { rows } = await pool.query("SELECT id FROM users WHERE role = 'admin' LIMIT 1");
+    const adminId = rows[0]?.id || null;
+
+    const seedFromJikan = require('./seed/jikanSeed');
+    const counts = await seedFromJikan({ pages: Math.min(pages, 40), adminUserId: adminId });
+    res.json({ success: true, message: 'Jikan seed complete', data: counts });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/titles', titleRoutes);
