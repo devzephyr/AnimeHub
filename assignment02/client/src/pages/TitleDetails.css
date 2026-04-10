@@ -1,22 +1,23 @@
 .title-details {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 2rem 20px;
 }
 
 .title-hero {
   display: grid;
   grid-template-columns: 280px 1fr;
   gap: 2.5rem;
-  margin-bottom: 3rem;
-  background: var(--surface);
-  padding: 1.5rem;
+  margin-bottom: 48px;
+  background: color-mix(in oklab, var(--surface) 50%, transparent);
+  padding: 1rem;
   border-radius: 12px;
-  border: 1px solid var(--border);
+  border: 1px solid color-mix(in oklab, var(--line) 20%, transparent);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
 }
 
 .title-poster-large {
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
 }
 
@@ -24,6 +25,7 @@
   width: 100%;
   height: auto;
   display: block;
+  border-radius: 12px;
 }
 
 .title-info-large {
@@ -35,20 +37,22 @@
 .title-type-badge {
   display: inline-block;
   background: var(--primary);
-  color: #fff;
-  padding: 0.2rem 0.7rem;
-  border-radius: 6px;
-  font-size: 0.78rem;
+  color: var(--text);
+  padding: 0 4px;
+  border-radius: 8px;
+  font-size: 10px;
   text-transform: uppercase;
   font-weight: 700;
   width: fit-content;
   letter-spacing: 0.5px;
+  line-height: 15px;
 }
 
 .title-info-large h1 {
-  font-size: 2rem;
+  font-size: 1.5rem;
   margin: 0;
-  font-weight: 700;
+  font-weight: 400;
+  color: var(--text);
 }
 
 .title-meta-row {
@@ -56,7 +60,7 @@
   gap: 1.25rem;
   color: var(--text-muted);
   flex-wrap: wrap;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
 }
 
 .title-meta-row > span {
@@ -67,12 +71,13 @@
 
 .status-badge {
   background: var(--surface-light);
-  padding: 0.2rem 0.6rem;
-  border-radius: 6px;
+  padding: 0 0.6rem;
+  border-radius: 8px;
   text-transform: capitalize;
   color: var(--success);
   font-weight: 500;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
 }
 
 .studio {
@@ -83,7 +88,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 1.3rem;
+  font-size: 1.25rem;
 }
 
 .rating-large .star {
@@ -91,11 +96,12 @@
 }
 
 .rating-large .rating-value {
-  font-weight: bold;
+  font-weight: 700;
+  color: var(--text);
 }
 
 .rating-large .rating-count {
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   color: var(--text-muted);
 }
 
@@ -109,9 +115,9 @@
   background: var(--surface-light);
   color: var(--text-muted);
   padding: 0.3rem 0.8rem;
-  border-radius: 6px;
+  border-radius: 8px;
   text-decoration: none;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 500;
   transition: all 0.2s;
   border: 1px solid transparent;
@@ -120,19 +126,20 @@
 .genre-link:hover {
   background: var(--surface-hover);
   color: var(--text);
-  border-color: var(--border);
+  border-color: color-mix(in oklab, var(--line) 20%, transparent);
 }
 
 .synopsis h3 {
   margin-bottom: 0.4rem;
   color: var(--text);
   font-size: 1rem;
+  font-weight: 600;
 }
 
 .synopsis p {
   color: var(--text-muted);
   line-height: 1.7;
-  font-size: 0.95rem;
+  font-size: 0.875rem;
 }
 
 .user-actions {
@@ -142,7 +149,7 @@
   align-items: center;
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid color-mix(in oklab, var(--line) 20%, transparent);
 }
 
 .watchlist-controls {
@@ -158,42 +165,52 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
 }
 
 .btn-add,
 .btn-review,
 .btn-remove {
   background: var(--primary);
-  color: #fff;
-  border: none;
+  border: 1px solid var(--primary);
+  color: var(--text);
   padding: 0.5rem 1rem;
   border-radius: 8px;
   cursor: pointer;
-  font-weight: 600;
-  font-size: 0.9rem;
-  transition: background 0.2s;
+  font-weight: 400;
+  font-size: 1rem;
+  height: 42px;
+  transition: transform 0.1s ease-in-out;
   white-space: nowrap;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 .btn-add:hover,
 .btn-review:hover,
 .btn-remove:hover {
-  background: var(--primary-dark);
+  opacity: 0.9;
+}
+
+.btn-add:active,
+.btn-review:active,
+.btn-remove:active {
+  transform: scale(0.99);
 }
 
 .review-form-container {
-  background: var(--surface);
-  padding: 1.5rem;
+  background: color-mix(in oklab, var(--surface) 50%, transparent);
+  padding: 1rem;
   border-radius: 12px;
   margin-bottom: 2rem;
-  border: 1px solid var(--border);
+  border: 1px solid color-mix(in oklab, var(--line) 20%, transparent);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
 }
 
 .review-form h3 {
   margin-bottom: 1.25rem;
   color: var(--text);
-  font-size: 1.1rem;
+  font-size: 1.125rem;
+  font-weight: 400;
 }
 
 .form-group {
@@ -202,10 +219,11 @@
 
 .form-group label {
   display: block;
-  margin-bottom: 0.4rem;
-  font-weight: 500;
+  margin-bottom: 4px;
+  font-weight: 600;
   color: var(--text-muted);
-  font-size: 0.9rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
 }
 
 .rating-input {
@@ -235,24 +253,26 @@
 .rating-display {
   margin-left: 0.75rem;
   color: var(--text-muted);
-  font-size: 0.9rem;
+  font-size: 0.875rem;
 }
 
 .form-group textarea {
   width: 100%;
   padding: 0.75rem;
-  background: var(--background);
-  border: 1px solid var(--border);
+  background: var(--surface-light);
+  border: 1px solid #424141;
   border-radius: 8px;
-  color: var(--text);
+  color: var(--text-muted);
   resize: vertical;
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 1rem;
+  min-height: 64px;
+  outline: none;
 }
 
+.form-group textarea:hover,
 .form-group textarea:focus {
-  outline: none;
-  border-color: var(--primary);
+  border-color: #525252;
 }
 
 .form-actions {
@@ -262,52 +282,76 @@
 
 .btn-submit {
   background: var(--primary);
-  color: #fff;
-  border: none;
-  padding: 0.5rem 1.2rem;
+  border: 1px solid var(--primary);
+  color: var(--text);
+  padding: 0.5rem 1rem;
   border-radius: 8px;
   cursor: pointer;
-  font-weight: 600;
-  font-size: 0.9rem;
+  font-weight: 400;
+  font-size: 1rem;
+  height: 42px;
+  transition: transform 0.1s ease-in-out;
+}
+
+.btn-submit:hover {
+  opacity: 0.9;
+}
+
+.btn-submit:active {
+  transform: scale(0.99);
 }
 
 .btn-submit:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+  opacity: 0.7;
+  pointer-events: none;
 }
 
 .btn-delete {
   background: var(--error);
-  color: #fff;
-  border: none;
-  padding: 0.5rem 1.2rem;
+  border: 1px solid var(--error);
+  color: var(--text);
+  padding: 0.5rem 1rem;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 1rem;
+  height: 42px;
+  transition: transform 0.1s ease-in-out;
+}
+
+.btn-delete:hover {
+  opacity: 0.9;
 }
 
 .btn-cancel {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text-muted);
-  padding: 0.5rem 1.2rem;
+  background: var(--secondary);
+  border: 1px solid transparent;
+  color: var(--text);
+  padding: 0.5rem 1rem;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 1rem;
+  height: 42px;
+  transition: transform 0.1s ease-in-out;
+}
+
+.btn-cancel:hover {
+  opacity: 0.9;
 }
 
 .reviews-section h2 {
   margin-bottom: 1.25rem;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--text);
 }
 
 .no-reviews {
   color: var(--text-muted);
   text-align: center;
   padding: 2rem;
-  background: var(--surface);
+  background: color-mix(in oklab, var(--surface) 50%, transparent);
   border-radius: 12px;
-  border: 1px solid var(--border);
+  border: 1px solid color-mix(in oklab, var(--line) 20%, transparent);
 }
 
 .reviews-list {
@@ -317,14 +361,15 @@
 }
 
 .review-card {
-  background: var(--surface);
-  padding: 1.25rem;
-  border-radius: 10px;
-  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--surface) 50%, transparent);
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid color-mix(in oklab, var(--line) 20%, transparent);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
 }
 
 .review-card.my-review {
-  border-color: var(--primary);
+  border-color: color-mix(in oklab, var(--primary) 50%, transparent);
 }
 
 .review-header {
@@ -348,11 +393,11 @@
   color: var(--text-muted);
   line-height: 1.6;
   margin-bottom: 0.4rem;
-  font-size: 0.95rem;
+  font-size: 0.875rem;
 }
 
 .review-date {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--text-dark);
 }
 
@@ -373,6 +418,6 @@
   }
 
   .title-info-large h1 {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
 }

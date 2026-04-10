@@ -1,18 +1,19 @@
 .profile-page {
   max-width: 900px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 2rem 20px;
 }
 
 .profile-header {
   display: flex;
   gap: 1.5rem;
   align-items: center;
-  background: var(--surface);
-  padding: 1.5rem;
+  background: color-mix(in oklab, var(--surface) 50%, transparent);
+  padding: 1rem;
   border-radius: 12px;
   margin-bottom: 1.5rem;
-  border: 1px solid var(--border);
+  border: 1px solid color-mix(in oklab, var(--line) 20%, transparent);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
 }
 
 .profile-avatar {
@@ -38,31 +39,33 @@
   justify-content: center;
   background: var(--surface-light);
   font-size: 2.5rem;
-  font-weight: bold;
+  font-weight: 700;
   color: var(--text-muted);
 }
 
 .profile-info h1 {
   font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--text);
   margin-bottom: 0.3rem;
 }
 
 .profile-email {
   color: var(--text-muted);
   margin-bottom: 0.15rem;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
 }
 
 .profile-role {
   color: var(--primary);
   font-weight: 500;
   margin-bottom: 0.15rem;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
 }
 
 .profile-joined {
   color: var(--text-dark);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
 }
 
 .alert {
@@ -70,18 +73,18 @@
   border-radius: 8px;
   margin-bottom: 1.25rem;
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
 }
 
 .alert-error {
-  background: rgba(239, 68, 68, 0.08);
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  background: color-mix(in oklab, var(--red) 10%, transparent);
+  border: 1px solid color-mix(in oklab, var(--red) 20%, transparent);
   color: var(--error);
 }
 
 .alert-success {
-  background: rgba(76, 175, 80, 0.08);
-  border: 1px solid rgba(76, 175, 80, 0.2);
+  background: color-mix(in oklab, var(--success) 10%, transparent);
+  border: 1px solid color-mix(in oklab, var(--success) 20%, transparent);
   color: var(--success);
 }
 
@@ -92,10 +95,11 @@
 }
 
 .profile-section {
-  background: var(--surface);
-  padding: 1.25rem;
+  background: color-mix(in oklab, var(--surface) 50%, transparent);
+  padding: 1rem;
   border-radius: 12px;
-  border: 1px solid var(--border);
+  border: 1px solid color-mix(in oklab, var(--line) 20%, transparent);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
 }
 
 .section-header {
@@ -106,24 +110,25 @@
 }
 
 .section-header h2 {
-  font-size: 1.15rem;
+  font-size: 1.125rem;
+  font-weight: 400;
   color: var(--text);
 }
 
 .btn-edit {
   background: transparent;
-  border: 1px solid var(--border);
+  border: 1px solid transparent;
   color: var(--text-muted);
-  padding: 0.35rem 0.85rem;
+  padding: 0.375rem 0.75rem;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
 }
 
 .btn-edit:hover {
-  border-color: var(--primary);
-  color: var(--primary);
+  background: var(--surface-light);
+  color: var(--text);
 }
 
 .profile-form {
@@ -135,27 +140,30 @@
 .profile-form .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 4px;
 }
 
 .profile-form label {
   color: var(--text-muted);
-  font-weight: 500;
-  font-size: 0.85rem;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
 }
 
 .profile-form input {
-  padding: 0.65rem 0.85rem;
-  background: var(--background);
-  border: 1px solid var(--border);
+  padding: 0 0.85rem;
+  height: 42px;
+  background: var(--surface-light);
+  border: 1px solid #424141;
   border-radius: 8px;
-  color: var(--text);
-  font-size: 0.95rem;
+  color: var(--text-muted);
+  font-size: 1rem;
+  outline: none;
 }
 
+.profile-form input:hover,
 .profile-form input:focus {
-  outline: none;
-  border-color: var(--primary);
+  border-color: #525252;
 }
 
 .form-actions {
@@ -166,43 +174,56 @@
 
 .btn-save {
   background: var(--primary);
-  color: #fff;
-  border: none;
-  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--primary);
+  color: var(--text);
+  padding: 0.5rem 1rem;
   border-radius: 8px;
   cursor: pointer;
-  font-weight: 600;
-  font-size: 0.9rem;
+  font-weight: 400;
+  font-size: 1rem;
+  height: 42px;
+  transition: transform 0.1s ease-in-out;
+}
+
+.btn-save:hover {
+  opacity: 0.9;
 }
 
 .btn-save:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+  opacity: 0.7;
+  pointer-events: none;
 }
 
 .btn-cancel {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text-muted);
-  padding: 0.5rem 1.25rem;
+  background: var(--secondary);
+  border: 1px solid transparent;
+  color: var(--text);
+  padding: 0.5rem 1rem;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 1rem;
+  height: 42px;
+  transition: transform 0.1s ease-in-out;
+}
+
+.btn-cancel:hover {
+  opacity: 0.9;
 }
 
 .btn-password {
   background: var(--surface-light);
-  color: var(--text);
-  border: none;
-  padding: 0.5rem 1.25rem;
+  color: var(--text-muted);
+  border: 1px solid transparent;
+  padding: 0.5rem 1rem;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.2s;
-  font-size: 0.9rem;
+  transition: all 0.2s;
+  font-size: 0.875rem;
 }
 
 .btn-password:hover {
   background: var(--surface-hover);
+  color: var(--text);
 }
 
 .profile-details {
@@ -219,12 +240,12 @@
 .detail-label {
   color: var(--text-muted);
   min-width: 100px;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
 }
 
 .detail-value {
   color: var(--text);
-  font-size: 0.9rem;
+  font-size: 0.875rem;
 }
 
 .stats-grid {
@@ -234,22 +255,22 @@
 }
 
 .stat-card {
-  background: var(--background);
+  background: var(--surface-light);
   padding: 1rem;
-  border-radius: 10px;
+  border-radius: 12px;
   text-align: center;
 }
 
 .stat-number {
   display: block;
   font-size: 1.75rem;
-  font-weight: bold;
+  font-weight: 700;
   color: var(--primary);
 }
 
 .stat-label {
   display: block;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
   margin-top: 0.2rem;
 }
@@ -261,7 +282,7 @@
 }
 
 .review-item {
-  background: var(--background);
+  background: var(--surface-light);
   padding: 0.85rem;
   border-radius: 8px;
 }
@@ -269,17 +290,18 @@
 .review-title {
   font-weight: 600;
   margin-bottom: 0.2rem;
+  color: var(--text);
 }
 
 .review-rating {
   color: var(--warning);
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   margin-bottom: 0.4rem;
 }
 
 .review-item .review-text {
   color: var(--text-muted);
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   line-height: 1.5;
   margin-bottom: 0.4rem;
 }
