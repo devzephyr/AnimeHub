@@ -17,7 +17,7 @@ const protect = async (req, res, next) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       // Get user from token (exclude password)
-      req.user = await User.findById(decoded.id).select('-passwordHash');
+      req.user = await User.findById(decoded.id, true);
 
       if (!req.user) {
         return res.status(401).json({
@@ -55,7 +55,7 @@ const optionalAuth = async (req, res, next) => {
     try {
       token = req.headers.authorization.split(' ')[1];
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = await User.findById(decoded.id).select('-passwordHash');
+      req.user = await User.findById(decoded.id, true);
     } catch (error) {
       // Token invalid, but that's okay for optional auth
       req.user = null;

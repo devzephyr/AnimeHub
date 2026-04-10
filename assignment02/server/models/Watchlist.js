@@ -1,79 +1,157 @@
-const mongoose = require('mongoose');
+const { pool, addId } = require('../config/db');
 
-const watchlistItemSchema = new mongoose.Schema({
-  titleId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Title',
-    required: true
-  },
-  status: {
-    type: String,
-    enum: ['plan_to_watch', 'watching', 'completed', 'on_hold', 'dropped'],
-    default: 'plan_to_watch'
-  },
-  progress: {
-    type: Number,
-    min: 0,
-    default: 0
-  },
-  addedAt: {
-    type: Date,
-    default: Date.now
-  }
-}, { _id: false });
+// Format watchlist items to match old Mongoose embedded array shape
+function formatWatchlistItem(row) {
+  if (!row) return row;
+  const item = { ...row };
+  item.titleId = item.title_id;
+  item.addedAt = item.added_at;
 
-const watchlistSchema = new mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: [true, 'User ID is required'],
-    unique: true
-  },
-  items: [watchlistItemSchema]
-}, {
-  timestamps: true
-});
-
-// Index for efficient queries
-watchlistSchema.index({ 'items.titleId': 1 });
-
-// Method to add item to watchlist
-watchlistSchema.methods.addItem = function (titleId, status = 'plan_to_watch') {
-  const existingItem = this.items.find(
-    item => item.titleId.toString() === titleId.toString()
-  );
-
-  if (existingItem) {
-    existingItem.status = status;
-    existingItem.addedAt = new Date();
-  } else {
-    this.items.push({ titleId, status });
+  // If joined title data exists, nest it under titleId
+  if (item.title_name !== undefined) {
+    item.titleId = {
+      _id: item.title_id,
+      id: item.title_id,
+      name: item.title_name,
+      type: item.title_type,
+      poster: item.title_poster,
+      year: item.title_year,
+      genres: item.title_genres,
+      episodes: item.title_episodes,
+      status: item.title_status,
+      rating: {
+        average: parseFloat(item.title_rating_average) || 0,
+        count: item.title_rating_count || 0
+      }
+    };
+    delete item.title_name;
+    delete item.title_type;
+    delete item.title_poster;
+    delete item.title_year;
+    delete item.title_genres;
+    delete item.title_episodes;
+    delete item.title_status;
+    delete item.title_rating_average;
+    delete item.title_rating_count;
   }
 
-  return this.save();
-};
+  delete item.title_id;
+  delete item.added_at;
+  return item;
+}
 
-// Method to remove item from watchlist
-watchlistSchema.methods.removeItem = function (titleId) {
-  this.items = this.items.filter(
-    item => item.titleId.toString() !== titleId.toString()
-  );
-  return this.save();
-};
+const TITLE_JOIN_SELECT = `
+  wi.*,
+  t.name AS title_name, t.type AS title_type, t.poster AS title_poster,
+  t.year AS title_year, t.genres AS title_genres, t.episodes AS title_episodes,
+  t.status AS title_status, t.rating_average AS title_rating_average,
+  t.rating_count AS title_rating_count
+`;
 
-// Method to update item status
-watchlistSchema.methods.updateItemStatus = function (titleId, status, progress) {
-  const item = this.items.find(
-    item => item.titleId.toString() === titleId.toString()
-  );
+const Watchlist = {
+  // Get all watchlist items for a user (returns { userId, items, _id })
+  async findByUserId(userId, { populate = false } = {}) {
+    let query, params;
+    if (populate) {
+      query = `SELECT ${TITLE_JOIN_SELECT}
+               FROM watchlist_items wi
+               LEFT JOIN titles t ON wi.title_id = t.id
+               WHERE wi.user_id = $1
+               ORDER BY wi.added_at DESC`;
+      params = [userId];
+    } else {
+      query = 'SELECT * FROM watchlist_items WHERE user_id = $1 ORDER BY added_at DESC';
+      params = [userId];
+    }
 
-  if (item) {
-    if (status) item.status = status;
-    if (progress !== undefined) item.progress = progress;
-    return this.save();
+    const { rows } = await pool.query(query, params);
+    const items = rows.map(formatWatchlistItem);
+
+    return {
+      _id: userId,
+      id: userId,
+      userId,
+      items
+    };
+  },
+
+  async addItem(userId, titleId, status = 'plan_to_watch') {
+    // Upsert: insert or update on conflict
+    await pool.query(
+      `INSERT INTO watchlist_items (user_id, title_id, status, added_at)
+       VALUES ($1, $2, $3, NOW())
+       ON CONFLICT (user_id, title_id)
+       DO UPDATE SET status = $3, added_at = NOW()`,
+      [userId, titleId, status]
+    );
+  },
+
+  async updateItem(userId, titleId, { status, progress }) {
+    const setClauses = [];
+    const values = [];
+    let paramIndex = 1;
+
+    if (status) { setClauses.push(`status = $${paramIndex++}`); values.push(status); }
+    if (progress !== undefined) { setClauses.push(`progress = $${paramIndex++}`); values.push(progress); }
+
+    if (setClauses.length === 0) return null;
+
+    values.push(userId, titleId);
+    const { rowCount } = await pool.query(
+      `UPDATE watchlist_items SET ${setClauses.join(', ')} WHERE user_id = $${paramIndex++} AND title_id = $${paramIndex}`,
+      values
+    );
+    return rowCount > 0;
+  },
+
+  async removeItem(userId, titleId) {
+    const { rowCount } = await pool.query(
+      'DELETE FROM watchlist_items WHERE user_id = $1 AND title_id = $2',
+      [userId, titleId]
+    );
+    return rowCount > 0;
+  },
+
+  async checkItem(userId, titleId) {
+    const { rows } = await pool.query(
+      'SELECT * FROM watchlist_items WHERE user_id = $1 AND title_id = $2',
+      [userId, titleId]
+    );
+    if (!rows[0]) return null;
+    return formatWatchlistItem(rows[0]);
+  },
+
+  async getStats(userId) {
+    const { rows } = await pool.query(
+      `SELECT status, COUNT(*) AS count FROM watchlist_items WHERE user_id = $1 GROUP BY status`,
+      [userId]
+    );
+
+    const byStatus = {};
+    let total = 0;
+    for (const row of rows) {
+      byStatus[row.status] = parseInt(row.count);
+      total += parseInt(row.count);
+    }
+
+    return { total, byStatus };
+  },
+
+  // For seeding: create a watchlist entry (backwards compat with old Watchlist.create)
+  async createForUser(userId, items = []) {
+    for (const item of items) {
+      await pool.query(
+        `INSERT INTO watchlist_items (user_id, title_id, status, progress, added_at)
+         VALUES ($1, $2, $3, $4, NOW())
+         ON CONFLICT (user_id, title_id) DO NOTHING`,
+        [userId, item.titleId, item.status || 'plan_to_watch', item.progress || 0]
+      );
+    }
+  },
+
+  async deleteMany() {
+    await pool.query('DELETE FROM watchlist_items');
   }
-
-  return null;
 };
 
-module.exports = mongoose.model('Watchlist', watchlistSchema);
+module.exports = Watchlist;

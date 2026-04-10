@@ -22,13 +22,7 @@ const getReviews = async (req, res, next) => {
     const skip = (parseInt(page) - 1) * parseInt(limit);
 
     const [reviews, total] = await Promise.all([
-      Review.find(query)
-        .populate('userId', 'username avatar')
-        .populate('titleId', 'name poster type')
-        .sort(sort)
-        .skip(skip)
-        .limit(parseInt(limit))
-        .lean(),
+      Review.find(query, { sort, skip, limit: parseInt(limit) }),
       Review.countDocuments(query)
     ]);
 
@@ -52,10 +46,7 @@ const getReviews = async (req, res, next) => {
 // @access  Public
 const getReview = async (req, res, next) => {
   try {
-    const review = await Review.findById(req.params.id)
-      .populate('userId', 'username avatar')
-      .populate('titleId', 'name poster type')
-      .lean();
+    const review = await Review.findById(req.params.id);
 
     if (!review) {
       throw new AppError('Review not found', 404);
@@ -100,10 +91,6 @@ const createReview = async (req, res, next) => {
       text
     });
 
-    // Populate user data
-    await review.populate('userId', 'username avatar');
-    await review.populate('titleId', 'name poster type');
-
     res.status(201).json({
       success: true,
       data: review
@@ -124,8 +111,9 @@ const updateReview = async (req, res, next) => {
       throw new AppError('Review not found', 404);
     }
 
-    // Check ownership
-    if (review.userId.toString() !== req.user._id.toString()) {
+    // Check ownership — review.user_id is the raw column
+    const reviewUserId = review.user_id || (review.userId?._id || review.userId);
+    if (reviewUserId.toString() !== req.user._id.toString()) {
       throw new AppError('Not authorized to update this review', 403);
     }
 
@@ -134,13 +122,7 @@ const updateReview = async (req, res, next) => {
     if (rating !== undefined) updates.rating = rating;
     if (text !== undefined) updates.text = text;
 
-    review = await Review.findByIdAndUpdate(
-      req.params.id,
-      updates,
-      { new: true, runValidators: true }
-    )
-      .populate('userId', 'username avatar')
-      .populate('titleId', 'name poster type');
+    review = await Review.findByIdAndUpdate(req.params.id, updates);
 
     res.json({
       success: true,
@@ -163,8 +145,9 @@ const deleteReview = async (req, res, next) => {
     }
 
     // Check ownership or admin
+    const reviewUserId = review.user_id || (review.userId?._id || review.userId);
     if (
-      review.userId.toString() !== req.user._id.toString() &&
+      reviewUserId.toString() !== req.user._id.toString() &&
       req.user.role !== 'admin'
     ) {
       throw new AppError('Not authorized to delete this review', 403);
@@ -189,9 +172,7 @@ const getMyReview = async (req, res, next) => {
     const review = await Review.findOne({
       userId: req.user._id,
       titleId: req.params.titleId
-    })
-      .populate('titleId', 'name poster type')
-      .lean();
+    });
 
     res.json({
       success: true,

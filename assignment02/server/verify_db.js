@@ -1,27 +1,29 @@
 require('dotenv').config();
-const mongoose = require('mongoose');
-const { User, Title, Review, Watchlist } = require('./models');
+const { pool, initDb } = require('./config/db');
 
 const verify = async () => {
     try {
-        console.log('Connecting to:', process.env.MONGODB_URI);
-        await mongoose.connect(process.env.MONGODB_URI);
+        console.log('Connecting to:', process.env.DATABASE_URL?.replace(/:[^:@]+@/, ':***@'));
+        await initDb();
         console.log('Connected.');
 
-        const userCount = await User.countDocuments();
-        console.log('Users:', userCount);
+        const users = await pool.query('SELECT COUNT(*) FROM users');
+        console.log('Users:', users.rows[0].count);
 
-        const titleCount = await Title.countDocuments();
-        console.log('Titles:', titleCount);
+        const titles = await pool.query('SELECT COUNT(*) FROM titles');
+        console.log('Titles:', titles.rows[0].count);
 
-        const reviewCount = await Review.countDocuments();
-        console.log('Reviews:', reviewCount);
+        const reviews = await pool.query('SELECT COUNT(*) FROM reviews');
+        console.log('Reviews:', reviews.rows[0].count);
 
-        const watchlistCount = await Watchlist.countDocuments();
-        console.log('Watchlists:', watchlistCount);
+        const watchlist = await pool.query('SELECT COUNT(*) FROM watchlist_items');
+        console.log('Watchlist items:', watchlist.rows[0].count);
 
-        const collections = await mongoose.connection.db.listCollections().toArray();
-        console.log('Collections in DB:', collections.map(c => c.name));
+        const tables = await pool.query(`
+            SELECT table_name FROM information_schema.tables
+            WHERE table_schema = 'public'
+        `);
+        console.log('Tables in DB:', tables.rows.map(t => t.table_name));
 
         process.exit(0);
     } catch (error) {

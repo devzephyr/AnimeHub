@@ -20,27 +20,18 @@ const getTitles = async (req, res, next) => {
 
     // Build query
     const query = {};
-
     if (type) query.type = type;
     if (status) query.status = status;
     if (year) query.year = parseInt(year);
-    if (genre) query.genres = { $in: Array.isArray(genre) ? genre : [genre] };
-    if (minRating) query['rating.average'] = { $gte: parseFloat(minRating) };
-
-    // Text search
-    if (search) {
-      query.$text = { $search: search };
-    }
+    if (genre) query.genre = genre;
+    if (minRating) query.minRating = minRating;
+    if (search) query.search = search;
 
     // Execute query with pagination
     const skip = (parseInt(page) - 1) * parseInt(limit);
 
     const [titles, total] = await Promise.all([
-      Title.find(query)
-        .sort(sort)
-        .skip(skip)
-        .limit(parseInt(limit))
-        .lean(),
+      Title.find(query, { sort, skip, limit: parseInt(limit) }),
       Title.countDocuments(query)
     ]);
 
@@ -64,7 +55,7 @@ const getTitles = async (req, res, next) => {
 // @access  Public
 const getTitle = async (req, res, next) => {
   try {
-    const title = await Title.findById(req.params.id).lean();
+    const title = await Title.findById(req.params.id);
 
     if (!title) {
       throw new AppError('Title not found', 404);
@@ -120,11 +111,7 @@ const updateTitle = async (req, res, next) => {
       throw new AppError('Not authorized to update this title', 403);
     }
 
-    title = await Title.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    );
+    title = await Title.findByIdAndUpdate(req.params.id, req.body);
 
     res.json({
       success: true,
@@ -175,7 +162,7 @@ const getGenres = async (req, res, next) => {
 
     res.json({
       success: true,
-      data: genres.sort()
+      data: genres
     });
   } catch (error) {
     next(error);
@@ -188,18 +175,22 @@ const getGenres = async (req, res, next) => {
 const getTopRated = async (req, res, next) => {
   try {
     const { limit = 10, type } = req.query;
-    const query = { 'rating.count': { $gte: 1 } };
-    
+    const query = { minRating: 0 };
+
     if (type) query.type = type;
 
-    const titles = await Title.find(query)
-      .sort({ 'rating.average': -1 })
-      .limit(parseInt(limit))
-      .lean();
+    const titles = await Title.find(query, {
+      sort: '-rating.average',
+      limit: parseInt(limit),
+      skip: 0
+    });
+
+    // Filter to only titles with at least 1 rating
+    const rated = titles.filter(t => t.rating.count >= 1);
 
     res.json({
       success: true,
-      data: titles
+      data: rated
     });
   } catch (error) {
     next(error);

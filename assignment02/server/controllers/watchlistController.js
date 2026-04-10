@@ -9,21 +9,7 @@ const getWatchlist = async (req, res, next) => {
   try {
     const { status, page = 1, limit = 50 } = req.query;
 
-    let watchlist = await Watchlist.findOne({ userId: req.user._id })
-      .populate({
-        path: 'items.titleId',
-        select: 'name type poster year genres rating episodes status'
-      })
-      .lean();
-
-    // Create watchlist if doesn't exist
-    if (!watchlist) {
-      watchlist = await Watchlist.create({
-        userId: req.user._id,
-        items: []
-      });
-      watchlist = watchlist.toObject();
-    }
+    const watchlist = await Watchlist.findByUserId(req.user._id, { populate: true });
 
     // Filter by status if provided
     let items = watchlist.items || [];
@@ -67,41 +53,18 @@ const addToWatchlist = async (req, res, next) => {
       throw new AppError('Title not found', 404);
     }
 
-    // Find or create watchlist
-    let watchlist = await Watchlist.findOne({ userId: req.user._id });
-
-    if (!watchlist) {
-      watchlist = new Watchlist({
-        userId: req.user._id,
-        items: []
-      });
-    }
-
     // Check if already in watchlist
-    const existingItem = watchlist.items.find(
-      item => item.titleId.toString() === titleId
-    );
+    const existing = await Watchlist.checkItem(req.user._id, titleId);
 
-    if (existingItem) {
-      // Update status if already exists
-      existingItem.status = status;
-      existingItem.addedAt = new Date();
-    } else {
-      // Add new item
-      watchlist.items.push({ titleId, status });
-    }
+    // Add or update
+    await Watchlist.addItem(req.user._id, titleId, status);
 
-    await watchlist.save();
-
-    // Populate and return
-    await watchlist.populate({
-      path: 'items.titleId',
-      select: 'name type poster year genres rating'
-    });
+    // Return populated watchlist
+    const watchlist = await Watchlist.findByUserId(req.user._id, { populate: true });
 
     res.status(201).json({
       success: true,
-      message: existingItem ? 'Watchlist item updated' : 'Added to watchlist',
+      message: existing ? 'Watchlist item updated' : 'Added to watchlist',
       data: watchlist
     });
   } catch (error) {
@@ -117,29 +80,14 @@ const updateWatchlistItem = async (req, res, next) => {
     const { titleId } = req.params;
     const { status, progress } = req.body;
 
-    const watchlist = await Watchlist.findOne({ userId: req.user._id });
-
-    if (!watchlist) {
-      throw new AppError('Watchlist not found', 404);
-    }
-
-    const item = watchlist.items.find(
-      item => item.titleId.toString() === titleId
-    );
-
-    if (!item) {
+    const existing = await Watchlist.checkItem(req.user._id, titleId);
+    if (!existing) {
       throw new AppError('Item not in watchlist', 404);
     }
 
-    if (status) item.status = status;
-    if (progress !== undefined) item.progress = progress;
+    await Watchlist.updateItem(req.user._id, titleId, { status, progress });
 
-    await watchlist.save();
-
-    await watchlist.populate({
-      path: 'items.titleId',
-      select: 'name type poster year genres rating'
-    });
+    const watchlist = await Watchlist.findByUserId(req.user._id, { populate: true });
 
     res.json({
       success: true,
@@ -157,22 +105,11 @@ const removeFromWatchlist = async (req, res, next) => {
   try {
     const { titleId } = req.params;
 
-    const watchlist = await Watchlist.findOne({ userId: req.user._id });
+    const removed = await Watchlist.removeItem(req.user._id, titleId);
 
-    if (!watchlist) {
-      throw new AppError('Watchlist not found', 404);
-    }
-
-    const itemIndex = watchlist.items.findIndex(
-      item => item.titleId.toString() === titleId
-    );
-
-    if (itemIndex === -1) {
+    if (!removed) {
       throw new AppError('Item not in watchlist', 404);
     }
-
-    watchlist.items.splice(itemIndex, 1);
-    await watchlist.save();
 
     res.json({
       success: true,
@@ -190,18 +127,7 @@ const checkInWatchlist = async (req, res, next) => {
   try {
     const { titleId } = req.params;
 
-    const watchlist = await Watchlist.findOne({ userId: req.user._id });
-
-    if (!watchlist) {
-      return res.json({
-        success: true,
-        data: { inWatchlist: false, item: null }
-      });
-    }
-
-    const item = watchlist.items.find(
-      item => item.titleId.toString() === titleId
-    );
+    const item = await Watchlist.checkItem(req.user._id, titleId);
 
     res.json({
       success: true,
@@ -220,30 +146,11 @@ const checkInWatchlist = async (req, res, next) => {
 // @access  Private
 const getWatchlistStats = async (req, res, next) => {
   try {
-    const watchlist = await Watchlist.findOne({ userId: req.user._id });
-
-    if (!watchlist || watchlist.items.length === 0) {
-      return res.json({
-        success: true,
-        data: {
-          total: 0,
-          byStatus: {}
-        }
-      });
-    }
-
-    // Count by status
-    const byStatus = watchlist.items.reduce((acc, item) => {
-      acc[item.status] = (acc[item.status] || 0) + 1;
-      return acc;
-    }, {});
+    const stats = await Watchlist.getStats(req.user._id);
 
     res.json({
       success: true,
-      data: {
-        total: watchlist.items.length,
-        byStatus
-      }
+      data: stats
     });
   } catch (error) {
     next(error);

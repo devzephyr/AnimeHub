@@ -1,16 +1,9 @@
 require('dotenv').config();
-const mongoose = require('mongoose');
-const { User, Title, Review, Watchlist } = require('../models');
-
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGODB_URI);
-    console.log('MongoDB Connected for seeding');
-  } catch (error) {
-    console.error('Database connection error:', error.message);
-    process.exit(1);
-  }
-};
+const { pool, initDb } = require('../config/db');
+const User = require('../models/User');
+const Title = require('../models/Title');
+const Review = require('../models/Review');
+const Watchlist = require('../models/Watchlist');
 
 // Sample data
 const users = [
@@ -149,18 +142,22 @@ const titles = [
 
 const seedDatabase = async () => {
   try {
-    await connectDB();
+    await initDb();
 
-    // Clear existing data
+    // Clear existing data (order matters for foreign keys)
     console.log('Clearing existing data...');
-    await User.deleteMany({});
-    await Title.deleteMany({});
-    await Review.deleteMany({});
-    await Watchlist.deleteMany({});
+    await Watchlist.deleteMany();
+    await Review.deleteMany();
+    await Title.deleteMany();
+    await User.deleteMany();
 
     // Create users
     console.log('Creating users...');
-    const createdUsers = await User.create(users);
+    const createdUsers = [];
+    for (const u of users) {
+      const user = await User.create(u);
+      createdUsers.push(user);
+    }
     console.log(`Created ${createdUsers.length} users`);
 
     // Create titles
@@ -169,7 +166,7 @@ const seedDatabase = async () => {
       ...title,
       createdBy: createdUsers[0]._id
     }));
-    const createdTitles = await Title.create(titlesWithCreator);
+    const createdTitles = await Title.createMany(titlesWithCreator);
     console.log(`Created ${createdTitles.length} titles`);
 
     // Create some reviews
@@ -206,33 +203,26 @@ const seedDatabase = async () => {
         text: 'A timeless Ghibli classic that everyone should watch.'
       }
     ];
-    const createdReviews = await Review.create(reviews);
-    console.log(`Created ${createdReviews.length} reviews`);
+    for (const r of reviews) {
+      await Review.create(r);
+    }
+    console.log(`Created ${reviews.length} reviews`);
 
-    // Create watchlists
+    // Create watchlist items
     console.log('Creating watchlists...');
-    const watchlists = [
-      {
-        userId: createdUsers[1]._id,
-        items: [
-          { titleId: createdTitles[3]._id, status: 'plan_to_watch' },
-          { titleId: createdTitles[4]._id, status: 'watching', progress: 50 },
-          { titleId: createdTitles[0]._id, status: 'completed' }
-        ]
-      },
-      {
-        userId: createdUsers[2]._id,
-        items: [
-          { titleId: createdTitles[7]._id, status: 'watching', progress: 20 },
-          { titleId: createdTitles[8]._id, status: 'completed' }
-        ]
-      }
-    ];
-    await Watchlist.create(watchlists);
+    await Watchlist.createForUser(createdUsers[1]._id, [
+      { titleId: createdTitles[3]._id, status: 'plan_to_watch' },
+      { titleId: createdTitles[4]._id, status: 'watching', progress: 50 },
+      { titleId: createdTitles[0]._id, status: 'completed' }
+    ]);
+    await Watchlist.createForUser(createdUsers[2]._id, [
+      { titleId: createdTitles[7]._id, status: 'watching', progress: 20 },
+      { titleId: createdTitles[8]._id, status: 'completed' }
+    ]);
     console.log('Created watchlists');
 
-    console.log('\\n=== Seed completed successfully! ===');
-    console.log('\\nTest accounts:');
+    console.log('\n=== Seed completed successfully! ===');
+    console.log('\nTest accounts:');
     console.log('Admin: admin@animehub.com / password123');
     console.log('User: user@animehub.com / password123');
     console.log('User: reviewer@animehub.com / password123');

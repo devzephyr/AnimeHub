@@ -18,9 +18,7 @@ const register = async (req, res, next) => {
     const { email, password, username } = req.body;
 
     // Check if user exists
-    const userExists = await User.findOne({
-      $or: [{ email }, { username }]
-    });
+    const userExists = await User.findOne({ email, username });
 
     if (userExists) {
       throw new AppError('User with this email or username already exists', 400);
@@ -33,16 +31,13 @@ const register = async (req, res, next) => {
       username
     });
 
-    // Create empty watchlist for user
-    await Watchlist.create({ userId: user._id, items: [] });
-
     // Generate token
     const token = generateToken(user._id);
 
     res.status(201).json({
       success: true,
       data: {
-        user: user.toJSON(),
+        user: User.toJSON(user),
         token
       }
     });
@@ -66,7 +61,7 @@ const login = async (req, res, next) => {
     }
 
     // Check password
-    const isMatch = await user.comparePassword(password);
+    const isMatch = await User.comparePassword(user, password);
 
     if (!isMatch) {
       throw new AppError('Invalid email or password', 401);
@@ -78,7 +73,7 @@ const login = async (req, res, next) => {
     res.json({
       success: true,
       data: {
-        user: user.toJSON(),
+        user: User.toJSON(user),
         token
       }
     });
@@ -96,7 +91,7 @@ const getMe = async (req, res, next) => {
 
     res.json({
       success: true,
-      data: user.toJSON()
+      data: User.toJSON(user)
     });
   } catch (error) {
     next(error);
@@ -114,15 +109,11 @@ const updateMe = async (req, res, next) => {
     if (username) updates.username = username;
     if (avatar !== undefined) updates.avatar = avatar;
 
-    const user = await User.findByIdAndUpdate(
-      req.user._id,
-      updates,
-      { new: true, runValidators: true }
-    );
+    const user = await User.findByIdAndUpdate(req.user._id, updates);
 
     res.json({
       success: true,
-      data: user.toJSON()
+      data: User.toJSON(user)
     });
   } catch (error) {
     next(error);
@@ -139,14 +130,16 @@ const changePassword = async (req, res, next) => {
     const user = await User.findById(req.user._id);
 
     // Verify current password
-    const isMatch = await user.comparePassword(currentPassword);
+    const isMatch = await User.comparePassword(user, currentPassword);
     if (!isMatch) {
       throw new AppError('Current password is incorrect', 400);
     }
 
-    // Update password
-    user.passwordHash = newPassword;
-    await user.save();
+    // Hash and update password
+    const bcrypt = require('bcrypt');
+    const salt = await bcrypt.genSalt(10);
+    const hashed = await bcrypt.hash(newPassword, salt);
+    await User.findByIdAndUpdate(user._id, { password_hash: hashed });
 
     // Generate new token
     const token = generateToken(user._id);
