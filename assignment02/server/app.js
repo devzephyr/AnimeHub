@@ -55,6 +55,21 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// One-time seed endpoint (protected by SEED_SECRET)
+app.post('/api/seed', async (req, res) => {
+  const { secret } = req.body;
+  if (!process.env.SEED_SECRET || secret !== process.env.SEED_SECRET) {
+    return res.status(403).json({ success: false, message: 'Invalid seed secret' });
+  }
+  try {
+    const runSeed = require('./seed/seedData');
+    const counts = await runSeed();
+    res.json({ success: true, message: 'Database seeded', data: counts });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/titles', titleRoutes);
