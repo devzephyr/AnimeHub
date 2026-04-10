@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const connectDB = require('./config/db');
+const { initDb } = require('./config/db');
 const { notFound, errorHandler } = require('./middleware/errorHandler');
 
 // Import routes
@@ -16,9 +16,6 @@ const {
 
 // Initialize express
 const app = express();
-
-// Connect to database
-connectDB();
 
 // Security middleware
 app.use(helmet());
@@ -68,11 +65,16 @@ app.use('/api/watchlist', watchlistRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-// Start server
+// Start server after DB initialization
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
-});
+const start = async () => {
+  await initDb();
+  app.listen(PORT, () => {
+    console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+  });
+};
+
+start();
 
 module.exports = app;

@@ -100,7 +100,7 @@ const reviewValidation = {
     body('titleId')
       .notEmpty()
       .withMessage('Title ID is required')
-      .isMongoId()
+      .isUUID()
       .withMessage('Invalid title ID'),
     body('rating')
       .isInt({ min: 1, max: 10 })
@@ -130,7 +130,7 @@ const watchlistValidation = {
     body('titleId')
       .notEmpty()
       .withMessage('Title ID is required')
-      .isMongoId()
+      .isUUID()
       .withMessage('Invalid title ID'),
     body('status')
       .optional()
@@ -155,7 +155,7 @@ const watchlistValidation = {
 const paramValidation = {
   mongoId: [
     param('id')
-      .isMongoId()
+      .isUUID()
       .withMessage('Invalid ID format'),
     validate
   ]

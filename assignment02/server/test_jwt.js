@@ -1,6 +1,6 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const mongoose = require('mongoose');
+const crypto = require('crypto');
 
 const testJWT = () => {
     try {
@@ -9,8 +9,8 @@ const testJWT = () => {
             throw new Error('JWT_SECRET is missing');
         }
 
-        const id = new mongoose.Types.ObjectId();
-        console.log('Testing with ObjectId:', id);
+        const id = crypto.randomUUID();
+        console.log('Testing with UUID:', id);
         const token = jwt.sign({ id }, process.env.JWT_SECRET, {
             expiresIn: process.env.JWT_EXPIRES_IN || '7d'
         });

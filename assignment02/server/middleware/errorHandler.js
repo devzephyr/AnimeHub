@@ -26,24 +26,31 @@ const errorHandler = (err, req, res, next) => {
     console.error('Error:', err);
   }
 
-  // Mongoose bad ObjectId
-  if (err.name === 'CastError') {
-    const message = 'Resource not found';
-    error = new AppError(message, 404);
-  }
-
-  // Mongoose duplicate key
-  if (err.code === 11000) {
-    const field = Object.keys(err.keyValue)[0];
+  // PostgreSQL unique constraint violation
+  if (err.code === '23505') {
+    const detail = err.detail || '';
+    const match = detail.match(/\((\w+)\)/);
+    const field = match ? match[1] : 'field';
     const message = `${field} already exists`;
     error = new AppError(message, 400);
   }
 
-  // Mongoose validation error
-  if (err.name === 'ValidationError') {
-    const messages = Object.values(err.errors).map(val => val.message);
-    const message = messages.join(', ');
+  // PostgreSQL foreign key violation
+  if (err.code === '23503') {
+    const message = 'Referenced resource not found';
     error = new AppError(message, 400);
+  }
+
+  // PostgreSQL check constraint violation
+  if (err.code === '23514') {
+    const message = 'Validation failed';
+    error = new AppError(message, 400);
+  }
+
+  // PostgreSQL invalid text representation (e.g., invalid UUID)
+  if (err.code === '22P02') {
+    const message = 'Resource not found';
+    error = new AppError(message, 404);
   }
 
   // JWT errors
