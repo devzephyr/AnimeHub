@@ -1,21 +1,21 @@
 .title-card {
-  background: #1a1a2e;
-  border-radius: 10px;
+  background: transparent;
+  border-radius: 8px;
   overflow: hidden;
   text-decoration: none;
   color: #fff;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform 0.2s;
 }
 
 .title-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(233, 69, 96, 0.2);
+  transform: translateY(-3px);
 }
 
 .title-poster {
   position: relative;
   aspect-ratio: 2/3;
   overflow: hidden;
+  border-radius: 8px;
 }
 
 .title-poster img {
@@ -26,72 +26,74 @@
 }
 
 .title-card:hover .title-poster img {
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
 
 .title-overlay {
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
   right: 0;
-  padding: 0.5rem;
+  padding: 0.4rem;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%);
+  align-items: flex-end;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
 }
 
 .title-type {
-  background: #e94560;
+  background: var(--primary, #5c9ce6);
   color: #fff;
-  padding: 0.2rem 0.5rem;
-  border-radius: 3px;
-  font-size: 0.75rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  font-size: 0.65rem;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
 .title-rating {
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.6);
   color: #ffc107;
-  padding: 0.2rem 0.5rem;
-  border-radius: 3px;
-  font-size: 0.85rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
   font-weight: 600;
 }
 
 .title-info {
-  padding: 1rem;
+  padding: 0.6rem 0.2rem;
 }
 
 .title-name {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 0.25rem 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  line-height: 1.3;
 }
 
 .title-meta {
   display: flex;
-  gap: 0.75rem;
-  font-size: 0.85rem;
-  color: #888;
-  margin-bottom: 0.5rem;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--text-muted, #999);
+  margin-bottom: 0.3rem;
 }
 
 .title-genres {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.3rem;
+  gap: 0.25rem;
 }
 
 .genre-tag {
-  background: #16213e;
-  color: #e94560;
-  padding: 0.15rem 0.4rem;
+  background: var(--surface-light, #242424);
+  color: var(--text-muted, #999);
+  padding: 0.1rem 0.35rem;
   border-radius: 3px;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
 }

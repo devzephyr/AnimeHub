@@ -59,7 +59,35 @@ function App() {
             </Routes>
           </main>
           <footer className="footer">
-            <p>&copy; {new Date().getFullYear()} AnimeHub. Built for educational purposes.</p>
+            <div className="footer-content">
+              <div className="footer-brand">ANIMEHUB</div>
+              <div className="footer-grid">
+                <div className="footer-col">
+                  <h4>Browse</h4>
+                  <ul>
+                    <li><a href="/browse">All Titles</a></li>
+                    <li><a href="/browse?type=anime">Anime</a></li>
+                    <li><a href="/browse?type=manga">Manga</a></li>
+                  </ul>
+                </div>
+                <div className="footer-col">
+                  <h4>Account</h4>
+                  <ul>
+                    <li><a href="/profile">Profile</a></li>
+                    <li><a href="/watchlist">Watchlist</a></li>
+                  </ul>
+                </div>
+                <div className="footer-col">
+                  <h4>Info</h4>
+                  <ul>
+                    <li><a href="https://github.com/devzephyr/animehub" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div className="footer-bottom">
+                &copy; {new Date().getFullYear()} AnimeHub. Built for educational purposes.
+              </div>
+            </div>
           </footer>
         </div>
       </Router>
