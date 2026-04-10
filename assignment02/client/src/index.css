@@ -1,4 +1,4 @@
-/* Base styles - minimal reset */
+/* Base styles */
 :root {
   font-family: 'Nunito Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.6;
@@ -6,28 +6,20 @@
 
   color-scheme: dark;
 
-  /* Black & Purple Theme */
-  --bg-primary: #000000;
-  /* Pure Black */
-  --bg-secondary: #0A0A0F;
-  /* Dark Violet Black */
-  --bg-tertiary: #14141A;
-  /* Darker Violet Grey */
+  /* Charcoal Theme (atsu.moe inspired) */
+  --bg-primary: #121212;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #242424;
 
-  --text-primary: #FFFFFF;
-  /* White */
-  --text-secondary: #A1A1AA;
-  /* Lavender Grey */
-  --text-accent: #D8B4FE;
-  /* Lavender */
+  --text-primary: #ffffff;
+  --text-secondary: #999999;
+  --text-accent: #5c9ce6;
 
-  --accent-primary: #9333EA;
-  /* Vivid Purple */
-  --accent-hover: #7E22CE;
-  /* Deep Purple */
-  --accent-glow: rgba(147, 51, 234, 0.3);
+  --accent-primary: #5c9ce6;
+  --accent-hover: #4a8bd4;
+  --accent-glow: rgba(92, 156, 230, 0.15);
 
-  --border-color: #27272A;
+  --border-color: #2e2e2e;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -44,13 +36,13 @@ body {
 }
 
 a {
-  color: var(--accent-primary);
+  color: var(--text-primary);
   text-decoration: none;
   transition: color 0.2s;
 }
 
 a:hover {
-  color: var(--accent-hover);
+  color: var(--accent-primary);
 }
 
 button {

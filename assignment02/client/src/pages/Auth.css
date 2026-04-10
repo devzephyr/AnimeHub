@@ -7,34 +7,37 @@
 }
 
 .auth-container {
-  background: #1a1a2e;
-  padding: 3rem;
-  border-radius: 15px;
+  background: var(--surface);
+  padding: 2.5rem;
+  border-radius: 12px;
   width: 100%;
-  max-width: 420px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  border: 1px solid var(--border);
 }
 
 .auth-container h1 {
   text-align: center;
   margin-bottom: 0.5rem;
-  color: #fff;
+  color: var(--text);
+  font-size: 1.5rem;
 }
 
 .auth-subtitle {
   text-align: center;
-  color: #888;
+  color: var(--text-muted);
   margin-bottom: 2rem;
+  font-size: 0.9rem;
 }
 
 .auth-error {
-  background: rgba(233, 69, 96, 0.1);
-  border: 1px solid #e94560;
-  color: #e94560;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: var(--error);
   padding: 0.75rem 1rem;
-  border-radius: 5px;
+  border-radius: 8px;
   margin-bottom: 1.5rem;
   text-align: center;
+  font-size: 0.9rem;
 }
 
 .auth-form {
@@ -46,43 +49,44 @@
 .auth-form .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .auth-form label {
   font-weight: 500;
-  color: #ccc;
+  color: var(--text-muted);
+  font-size: 0.9rem;
 }
 
 .auth-form input {
-  padding: 0.85rem 1rem;
-  background: #0f0f1a;
-  border: 1px solid #333;
+  padding: 0.75rem 1rem;
+  background: var(--background);
+  border: 1px solid var(--border);
   border-radius: 8px;
-  color: #fff;
-  font-size: 1rem;
+  color: var(--text);
+  font-size: 0.95rem;
   transition: border-color 0.2s;
 }
 
 .auth-form input:focus {
   outline: none;
-  border-color: #e94560;
+  border-color: var(--primary);
 }
 
 .auth-form input::placeholder {
-  color: #666;
+  color: var(--text-dark);
 }
 
 .field-error {
-  color: #e94560;
-  font-size: 0.85rem;
+  color: var(--error);
+  font-size: 0.8rem;
 }
 
 .btn-auth {
-  background: #e94560;
+  background: var(--primary);
   color: #fff;
   border: none;
-  padding: 1rem;
+  padding: 0.8rem;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 600;
@@ -92,22 +96,23 @@
 }
 
 .btn-auth:hover:not(:disabled) {
-  background: #d63050;
+  background: var(--primary-dark);
 }
 
 .btn-auth:disabled {
-  opacity: 0.7;
+  opacity: 0.6;
   cursor: not-allowed;
 }
 
 .auth-switch {
   text-align: center;
   margin-top: 1.5rem;
-  color: #888;
+  color: var(--text-muted);
+  font-size: 0.9rem;
 }
 
 .auth-switch a {
-  color: #e94560;
+  color: var(--primary);
   text-decoration: none;
   font-weight: 500;
 }
