@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Toaster } from 'sonner';
 import { AuthProvider } from './context/AuthContext';
 import { Navbar, ProtectedRoute } from './components';
 import {
@@ -15,6 +16,18 @@ import './App.css';
 function App() {
   return (
     <AuthProvider>
+      <Toaster
+        theme="dark"
+        position="bottom-right"
+        toastOptions={{
+          style: {
+            background: 'var(--surface)',
+            border: '1px solid var(--border)',
+            color: 'var(--text)',
+            fontFamily: 'inherit',
+          },
+        }}
+      />
       <Router>
         <div className="app">
           <Navbar />

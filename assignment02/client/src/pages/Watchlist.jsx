@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
 import { watchlistAPI } from '../services/api';
 import { Loading } from '../components';
 import './Watchlist.css';
@@ -55,8 +56,9 @@ const Watchlist = () => {
       await watchlistAPI.update(titleId, { status: newStatus });
       fetchWatchlist();
       fetchStats();
+      toast.success('Status updated');
     } catch (err) {
-      console.error('Failed to update status:', err);
+      toast.error('Failed to update status');
     }
   };
 
@@ -67,8 +69,9 @@ const Watchlist = () => {
       await watchlistAPI.remove(titleId);
       fetchWatchlist();
       fetchStats();
+      toast.success('Removed from watchlist');
     } catch (err) {
-      console.error('Failed to remove:', err);
+      toast.error('Failed to remove from watchlist');
     }
   };
 

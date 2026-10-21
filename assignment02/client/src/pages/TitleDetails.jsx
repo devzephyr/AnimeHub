@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { m } from 'motion/react';
+import { toast } from 'sonner';
 import { titlesAPI, reviewsAPI, watchlistAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { Loading } from '../components';
@@ -68,8 +69,9 @@ const TitleDetails = () => {
     try {
       await watchlistAPI.add({ titleId: id, status });
       setWatchlistStatus({ inWatchlist: true, item: { status } });
+      toast.success('Added to watchlist');
     } catch (err) {
-      console.error('Failed to add to watchlist:', err);
+      toast.error('Failed to add to watchlist');
     }
   };
 
@@ -77,8 +79,9 @@ const TitleDetails = () => {
     try {
       await watchlistAPI.remove(id);
       setWatchlistStatus({ inWatchlist: false, item: null });
+      toast.success('Removed from watchlist');
     } catch (err) {
-      console.error('Failed to remove from watchlist:', err);
+      toast.error('Failed to remove from watchlist');
     }
   };
 
@@ -101,12 +104,12 @@ const TitleDetails = () => {
         setReviews([response.data.data, ...reviews]);
       }
       setShowReviewForm(false);
+      toast.success(myReview ? 'Review updated' : 'Review submitted');
 
-      // Refresh title to get updated rating
       const titleRes = await titlesAPI.getOne(id);
       setTitle(titleRes.data.data);
     } catch (err) {
-      console.error('Failed to submit review:', err);
+      toast.error('Failed to submit review');
     } finally {
       setSubmitting(false);
     }
@@ -120,12 +123,12 @@ const TitleDetails = () => {
       setMyReview(null);
       setReviews(reviews.filter((r) => r._id !== myReview._id));
       setReviewForm({ rating: 5, text: '' });
+      toast.success('Review deleted');
 
-      // Refresh title rating
       const titleRes = await titlesAPI.getOne(id);
       setTitle(titleRes.data.data);
     } catch (err) {
-      console.error('Failed to delete review:', err);
+      toast.error('Failed to delete review');
     }
   };
 

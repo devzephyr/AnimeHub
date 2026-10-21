@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import { useAuth } from '../context/AuthContext';
 import './Auth.css';
 
@@ -64,7 +65,10 @@ const Register = () => {
     try {
       const result = await register(formData.email, formData.password, formData.username);
       if (result.success) {
+        toast.success('Account created!');
         navigate('/');
+      } else {
+        toast.error(result.error || 'Registration failed');
       }
     } finally {
       setLoading(false);

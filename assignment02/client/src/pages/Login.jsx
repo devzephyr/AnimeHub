@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { toast } from 'sonner';
 import { useAuth } from '../context/AuthContext';
 import './Auth.css';
 
@@ -48,7 +49,10 @@ const Login = () => {
     try {
       const result = await login(formData.email, formData.password);
       if (result.success) {
+        toast.success('Welcome back!');
         navigate(from, { replace: true });
+      } else {
+        toast.error(result.error || 'Login failed');
       }
     } finally {
       setLoading(false);
