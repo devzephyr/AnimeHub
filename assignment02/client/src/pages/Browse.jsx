@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import { titlesAPI } from '../services/api';
 import { TitleCard, Loading, Pagination } from '../components';
 import './Browse.css';
@@ -109,7 +109,7 @@ const Browse = () => {
   ];
 
   return (
-    <motion.div
+    <m.div
       className="browse"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -134,6 +134,7 @@ const Browse = () => {
             value={filters.type}
             onChange={(e) => handleFilterChange('type', e.target.value)}
             className="filter-select"
+            aria-label="Filter by type"
           >
             <option value="">All Types</option>
             {types.map((type) => (
@@ -147,6 +148,7 @@ const Browse = () => {
             value={filters.genre}
             onChange={(e) => handleFilterChange('genre', e.target.value)}
             className="filter-select"
+            aria-label="Filter by genre"
           >
             <option value="">All Genres</option>
             {genres.map((genre) => (
@@ -158,6 +160,7 @@ const Browse = () => {
             value={filters.year}
             onChange={(e) => handleFilterChange('year', e.target.value)}
             className="filter-select"
+            aria-label="Filter by year"
           >
             <option value="">All Years</option>
             {years.map((year) => (
@@ -169,6 +172,7 @@ const Browse = () => {
             value={filters.sort}
             onChange={(e) => handleFilterChange('sort', e.target.value)}
             className="filter-select"
+            aria-label="Sort by"
           >
             {sortOptions.map((opt) => (
               <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -194,14 +198,14 @@ const Browse = () => {
         <>
           <div className="title-grid">
             {titles.map((title, i) => (
-              <motion.div
+              <m.div
                 key={title._id}
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.25, delay: i * 0.03 }}
               >
                 <TitleCard title={title} />
-              </motion.div>
+              </m.div>
             ))}
           </div>
 
@@ -212,7 +216,7 @@ const Browse = () => {
           />
         </>
       )}
-    </motion.div>
+    </m.div>
   );
 };
 

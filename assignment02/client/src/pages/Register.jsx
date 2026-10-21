@@ -61,11 +61,13 @@ const Register = () => {
     if (!validateForm()) return;
 
     setLoading(true);
-    const result = await register(formData.email, formData.password, formData.username);
-    setLoading(false);
-
-    if (result.success) {
-      navigate('/');
+    try {
+      const result = await register(formData.email, formData.password, formData.username);
+      if (result.success) {
+        navigate('/');
+      }
+    } finally {
+      setLoading(false);
     }
   };
 

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import { Clapperboard, Compass, List, User, LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import './Navbar.css';
@@ -21,7 +21,7 @@ const Navbar = () => {
           AnimeHub
         </Link>
 
-        <motion.div
+        <m.div
           className="navbar-links"
           initial={{ opacity: 0, y: -6 }}
           animate={{ opacity: 1, y: 0 }}
@@ -56,7 +56,7 @@ const Navbar = () => {
               <Link to="/register" className="btn-register">Register</Link>
             </div>
           )}
-        </motion.div>
+        </m.div>
       </div>
     </nav>
   );

@@ -45,11 +45,13 @@ const Login = () => {
     if (!validateForm()) return;
 
     setLoading(true);
-    const result = await login(formData.email, formData.password);
-    setLoading(false);
-
-    if (result.success) {
-      navigate(from, { replace: true });
+    try {
+      const result = await login(formData.email, formData.password);
+      if (result.success) {
+        navigate(from, { replace: true });
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
