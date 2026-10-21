@@ -14,22 +14,43 @@
 .hero::before {
   content: '';
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 40%;
+  left: 35%;
   transform: translate(-50%, -50%);
-  width: 500px;
-  height: 300px;
-  background: radial-gradient(ellipse, color-mix(in oklab, var(--primary) 12%, transparent) 0%, transparent 70%);
+  width: 450px;
+  height: 350px;
+  background: radial-gradient(ellipse, color-mix(in oklab, var(--primary) 15%, transparent) 0%, transparent 70%);
   pointer-events: none;
   z-index: -1;
 }
 
-.hero h1 {
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 60%;
+  left: 65%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 300px;
+  background: radial-gradient(ellipse, color-mix(in oklab, #6e9ef0 10%, transparent) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.hero-title {
   font-size: 3.75rem;
   margin-bottom: 0.75rem;
   font-weight: 700;
   color: var(--text);
-  line-height: 1;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary) 0%, #6dd5ed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .hero p {
@@ -57,17 +78,18 @@
   height: 42px;
   display: inline-flex;
   align-items: center;
-  transition: transform 0.1s ease-in-out;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition: transform 0.15s ease-out, box-shadow 0.2s ease-out;
+  box-shadow: 0 0 12px color-mix(in oklab, var(--primary) 30%, transparent);
 }
 
 .btn-primary:hover {
-  opacity: 0.9;
   color: var(--text);
+  transform: scale(1.02);
+  box-shadow: 0 0 20px color-mix(in oklab, var(--primary) 45%, transparent);
 }
 
 .btn-primary:active {
-  transform: scale(0.99);
+  transform: scale(0.97);
 }
 
 .btn-secondary {
@@ -91,11 +113,11 @@
 }
 
 .btn-secondary:active {
-  transform: scale(0.99);
+  transform: scale(0.97);
 }
 
 .section {
-  margin-bottom: 48px;
+  margin-bottom: 56px;
 }
 
 .section-header {
@@ -214,7 +236,7 @@
 }
 
 @media (max-width: 768px) {
-  .hero h1 {
+  .hero-title {
     font-size: 1.875rem;
     line-height: 1.2;
   }
