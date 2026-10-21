@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import { titlesAPI, reviewsAPI, watchlistAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { Loading } from '../components';
@@ -136,13 +136,13 @@ const TitleDetails = () => {
   const defaultPoster = 'https://via.placeholder.com/300x450?text=No+Poster';
 
   return (
-    <motion.div
+    <m.div
       className="title-details"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      <motion.div
+      <m.div
         className="title-hero"
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
@@ -221,7 +221,7 @@ const TitleDetails = () => {
             </div>
           )}
         </div>
-      </motion.div>
+      </m.div>
 
       {showReviewForm && isAuthenticated && (
         <div className="review-form-container">
@@ -229,14 +229,15 @@ const TitleDetails = () => {
             <h3>{myReview ? 'Edit Your Review' : 'Write a Review'}</h3>
 
             <div className="form-group">
-              <label>Rating</label>
-              <div className="rating-input">
+              <label id="rating-label">Rating</label>
+              <div className="rating-input" role="group" aria-labelledby="rating-label">
                 {[...Array(10)].map((_, i) => (
                   <button
                     key={i}
                     type="button"
                     className={`rating-star ${i < reviewForm.rating ? 'active' : ''}`}
                     onClick={() => setReviewForm({ ...reviewForm, rating: i + 1 })}
+                    aria-label={`Rate ${i + 1} out of 10`}
                   >
                     ★
                   </button>
@@ -246,8 +247,9 @@ const TitleDetails = () => {
             </div>
 
             <div className="form-group">
-              <label>Review (optional)</label>
+              <label htmlFor="review-text">Review (optional)</label>
               <textarea
+                id="review-text"
                 value={reviewForm.text}
                 onChange={(e) => setReviewForm({ ...reviewForm, text: e.target.value })}
                 placeholder="Share your thoughts..."
@@ -307,7 +309,7 @@ const TitleDetails = () => {
           </div>
         )}
       </section>
-    </motion.div>
+    </m.div>
   );
 };
 

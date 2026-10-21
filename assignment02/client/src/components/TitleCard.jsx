@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import { Link } from 'react-router-dom';
 import './TitleCard.css';
 
@@ -7,7 +7,7 @@ const TitleCard = ({ title }) => {
 
   return (
     <Link to={`/titles/${title._id}`} className="title-card">
-      <motion.div
+      <m.div
         whileHover={{ y: -4 }}
         transition={{ type: "tween", duration: 0.2 }}
       >
@@ -34,13 +34,13 @@ const TitleCard = ({ title }) => {
           </div>
           {title.genres?.length > 0 && (
             <div className="title-genres">
-              {title.genres.slice(0, 3).map((genre, index) => (
-                <span key={index} className="genre-tag">{genre}</span>
+              {title.genres.slice(0, 3).map((genre) => (
+                <span key={genre} className="genre-tag">{genre}</span>
               ))}
             </div>
           )}
         </div>
-      </motion.div>
+      </m.div>
     </Link>
   );
 };

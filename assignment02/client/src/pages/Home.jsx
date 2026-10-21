@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import { BookOpen, Star, Search } from 'lucide-react';
 import { titlesAPI } from '../services/api';
 import { TitleCard, Loading } from '../components';
@@ -46,13 +46,13 @@ const Home = () => {
   }
 
   return (
-    <motion.div
+    <m.div
       className="home"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
     >
-      <motion.section
+      <m.section
         className="hero"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -66,16 +66,16 @@ const Home = () => {
             <Link to="/register" className="btn-secondary">Join Now</Link>
           </div>
         </div>
-      </motion.section>
+      </m.section>
 
       {topRated.length > 0 && (
-        <motion.section
+        <m.section
           className="section"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.2 }}
         >
-          <motion.div
+          <m.div
             className="section-header"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -85,30 +85,30 @@ const Home = () => {
             <Link to="/browse?sort=-rating.average" className="view-all">
               View All &rarr;
             </Link>
-          </motion.div>
+          </m.div>
           <div className="title-grid">
             {topRated.map((title, i) => (
-              <motion.div
+              <m.div
                 key={title._id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.3 + i * 0.06 }}
               >
                 <TitleCard title={title} />
-              </motion.div>
+              </m.div>
             ))}
           </div>
-        </motion.section>
+        </m.section>
       )}
 
       {recent.length > 0 && (
-        <motion.section
+        <m.section
           className="section"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.5 }}
         >
-          <motion.div
+          <m.div
             className="section-header"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -118,23 +118,23 @@ const Home = () => {
             <Link to="/browse" className="view-all">
               View All &rarr;
             </Link>
-          </motion.div>
+          </m.div>
           <div className="title-grid">
             {recent.map((title, i) => (
-              <motion.div
+              <m.div
                 key={title._id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.6 + i * 0.06 }}
               >
                 <TitleCard title={title} />
-              </motion.div>
+              </m.div>
             ))}
           </div>
-        </motion.section>
+        </m.section>
       )}
 
-      <motion.section
+      <m.section
         className="features"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -147,7 +147,7 @@ const Home = () => {
             { icon: Star, title: 'Rate & Review', desc: 'Share your thoughts and help others discover great anime.' },
             { icon: Search, title: 'Discover New Titles', desc: 'Browse by genre, year, or rating to find your next favorite.' },
           ].map((feat, i) => (
-            <motion.div
+            <m.div
               key={feat.title}
               className="feature"
               initial={{ opacity: 0, scale: 0.95 }}
@@ -160,11 +160,11 @@ const Home = () => {
               </span>
               <h3>{feat.title}</h3>
               <p>{feat.desc}</p>
-            </motion.div>
+            </m.div>
           ))}
         </div>
-      </motion.section>
-    </motion.div>
+      </m.section>
+    </m.div>
   );
 };
 
