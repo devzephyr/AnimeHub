@@ -1,6 +1,5 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'sonner';
-import { m } from 'motion/react';
 import { AuthProvider } from './context/AuthContext';
 import { Navbar, ProtectedRoute } from './components';
 import {
@@ -10,7 +9,8 @@ import {
   Login,
   Register,
   Watchlist,
-  Profile
+  Profile,
+  NotFound
 } from './pages';
 import './App.css';
 
@@ -60,48 +60,7 @@ function App() {
               />
 
               {/* 404 fallback */}
-              <Route
-                path="*"
-                element={
-                  <m.div
-                    className="not-found"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.4 }}
-                  >
-                    <m.h1
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.1 }}
-                    >
-                      404
-                    </m.h1>
-                    <m.p
-                      className="not-found-subtitle"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.4, delay: 0.25 }}
-                    >
-                      This page got isekai'd to another world
-                    </m.p>
-                    <m.p
-                      className="not-found-desc"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.4, delay: 0.4 }}
-                    >
-                      The page you're looking for doesn't exist or has been moved.
-                    </m.p>
-                    <m.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.4, delay: 0.55 }}
-                    >
-                      <Link to="/" className="not-found-btn">Go Home</Link>
-                    </m.div>
-                  </m.div>
-                }
-              />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
           <footer className="footer">

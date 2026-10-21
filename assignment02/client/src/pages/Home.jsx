@@ -59,7 +59,7 @@ const Home = () => {
         transition={{ duration: 0.5, delay: 0.1 }}
       >
         <div className="hero-content">
-          <h1>Welcome to AnimeHub</h1>
+          <h1 className="hero-title">Welcome to <span className="gradient-text">AnimeHub</span></h1>
           <p>Discover, track, and review your favorite anime and movies</p>
           <div className="hero-actions">
             <Link to="/browse" className="btn-primary">Browse All</Link>

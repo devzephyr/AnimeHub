@@ -34,9 +34,8 @@ const Watchlist = () => {
       const response = await watchlistAPI.get(params);
       setWatchlist(response.data.data);
       setError(null);
-    } catch (err) {
+    } catch {
       setError('Failed to load watchlist');
-      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -46,8 +45,8 @@ const Watchlist = () => {
     try {
       const response = await watchlistAPI.getStats();
       setStats(response.data.data);
-    } catch (err) {
-      console.error('Failed to load stats:', err);
+    } catch {
+      toast.error('Failed to load stats');
     }
   };
 

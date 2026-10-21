@@ -50,13 +50,12 @@ const TitleDetails = () => {
                 text: myReviewRes.data.data.text || ''
               });
             }
-          } catch (err) {
-            console.error('Failed to fetch user data:', err);
+          } catch {
+            // user-specific data fetch failed silently
           }
         }
-      } catch (err) {
+      } catch {
         setError('Failed to load title');
-        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -70,7 +69,7 @@ const TitleDetails = () => {
       await watchlistAPI.add({ titleId: id, status });
       setWatchlistStatus({ inWatchlist: true, item: { status } });
       toast.success('Added to watchlist');
-    } catch (err) {
+    } catch {
       toast.error('Failed to add to watchlist');
     }
   };
@@ -80,7 +79,7 @@ const TitleDetails = () => {
       await watchlistAPI.remove(id);
       setWatchlistStatus({ inWatchlist: false, item: null });
       toast.success('Removed from watchlist');
-    } catch (err) {
+    } catch {
       toast.error('Failed to remove from watchlist');
     }
   };
@@ -108,7 +107,7 @@ const TitleDetails = () => {
 
       const titleRes = await titlesAPI.getOne(id);
       setTitle(titleRes.data.data);
-    } catch (err) {
+    } catch {
       toast.error('Failed to submit review');
     } finally {
       setSubmitting(false);
@@ -127,7 +126,7 @@ const TitleDetails = () => {
 
       const titleRes = await titlesAPI.getOne(id);
       setTitle(titleRes.data.data);
-    } catch (err) {
+    } catch {
       toast.error('Failed to delete review');
     }
   };

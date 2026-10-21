@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { toast } from 'sonner';
 import { useAuth } from '../context/AuthContext';
 import { authAPI, reviewsAPI, watchlistAPI } from '../services/api';
 import { Loading } from '../components';
@@ -42,8 +43,8 @@ const Profile = () => {
       ]);
       setReviews(reviewsRes.data.data);
       setStats(statsRes.data.data);
-    } catch (err) {
-      console.error('Failed to fetch user data:', err);
+    } catch {
+      toast.error('Failed to load profile data');
     } finally {
       setLoading(false);
     }
@@ -59,9 +60,9 @@ const Profile = () => {
       const response = await authAPI.updateMe(formData);
       updateUser(response.data.data);
       setEditMode(false);
-      setSuccess('Profile updated successfully');
+      toast.success('Profile updated');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to update profile');
+      toast.error(err.response?.data?.message || 'Failed to update profile');
     } finally {
       setSaving(false);
     }
@@ -73,12 +74,12 @@ const Profile = () => {
     setSuccess(null);
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      setError('New passwords do not match');
+      toast.error('New passwords do not match');
       return;
     }
 
     if (passwordData.newPassword.length < 6) {
-      setError('Password must be at least 6 characters');
+      toast.error('Password must be at least 6 characters');
       return;
     }
 
@@ -91,9 +92,9 @@ const Profile = () => {
       });
       setShowPasswordForm(false);
       setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
-      setSuccess('Password changed successfully');
+      toast.success('Password changed');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to change password');
+      toast.error(err.response?.data?.message || 'Failed to change password');
     } finally {
       setSaving(false);
     }
