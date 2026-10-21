@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { motion } from 'motion/react';
 import { titlesAPI, reviewsAPI, watchlistAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { Loading } from '../components';
@@ -135,8 +136,18 @@ const TitleDetails = () => {
   const defaultPoster = 'https://via.placeholder.com/300x450?text=No+Poster';
 
   return (
-    <div className="title-details">
-      <div className="title-hero">
+    <motion.div
+      className="title-details"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+    >
+      <motion.div
+        className="title-hero"
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.1 }}
+      >
         <div className="title-poster-large">
           <img
             src={title.poster || defaultPoster}
@@ -210,7 +221,7 @@ const TitleDetails = () => {
             </div>
           )}
         </div>
-      </div>
+      </motion.div>
 
       {showReviewForm && isAuthenticated && (
         <div className="review-form-container">
@@ -296,7 +307,7 @@ const TitleDetails = () => {
           </div>
         )}
       </section>
-    </div>
+    </motion.div>
   );
 };
 

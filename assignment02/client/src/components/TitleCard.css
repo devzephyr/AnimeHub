@@ -5,9 +5,6 @@
   color: var(--text-muted);
 }
 
-.title-card:active {
-  transform: scale(0.95);
-}
 
 .title-poster {
   position: relative;
@@ -26,12 +23,13 @@
   border-radius: 12px;
   outline: 2px solid transparent;
   outline-offset: 0;
-  transition: all 0.2s;
+  transition: all 0.2s, box-shadow 0.3s;
 }
 
 .title-card:hover .title-poster img,
 .title-card:focus .title-poster img {
   outline-color: var(--text-muted);
+  box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.3);
 }
 
 .title-overlay {

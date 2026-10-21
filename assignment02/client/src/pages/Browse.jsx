@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { motion } from 'motion/react';
 import { titlesAPI } from '../services/api';
 import { TitleCard, Loading, Pagination } from '../components';
 import './Browse.css';
@@ -108,7 +109,12 @@ const Browse = () => {
   ];
 
   return (
-    <div className="browse">
+    <motion.div
+      className="browse"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+    >
       <div className="browse-header">
         <h1>Browse Titles</h1>
         <p>{pagination.total} titles found</p>
@@ -187,8 +193,15 @@ const Browse = () => {
       ) : (
         <>
           <div className="title-grid">
-            {titles.map((title) => (
-              <TitleCard key={title._id} title={title} />
+            {titles.map((title, i) => (
+              <motion.div
+                key={title._id}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.25, delay: i * 0.03 }}
+              >
+                <TitleCard title={title} />
+              </motion.div>
             ))}
           </div>
 
@@ -199,7 +212,7 @@ const Browse = () => {
           />
         </>
       )}
-    </div>
+    </motion.div>
   );
 };
 

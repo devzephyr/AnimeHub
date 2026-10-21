@@ -1,11 +1,14 @@
 .navbar {
-  background: var(--background);
+  background: color-mix(in oklab, var(--background) 90%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   position: sticky;
   top: 0;
   z-index: 5;
   height: 80px;
   display: flex;
   align-items: center;
+  border-bottom: 1px solid color-mix(in oklab, var(--line) 10%, transparent);
 }
 
 .navbar-container {
@@ -132,6 +135,9 @@
   font-size: 1rem;
   height: 42px;
   transition: transform 0.1s ease-in-out;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .btn-logout:hover {
