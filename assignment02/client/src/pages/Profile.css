@@ -13,7 +13,6 @@
   border-radius: 12px;
   margin-bottom: 1.5rem;
   border: 1px solid color-mix(in oklab, var(--line) 20%, transparent);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
 }
 
 .profile-avatar {
@@ -43,10 +42,11 @@
   color: var(--text-muted);
 }
 
-.profile-info h1 {
-  font-size: 1.5rem;
-  font-weight: 400;
-  color: var(--text);
+.profile-info {
+  min-width: 0;
+}
+
+.profile-info .page-title {
   margin-bottom: 0.3rem;
 }
 
@@ -54,6 +54,7 @@
   color: var(--text-muted);
   margin-bottom: 0.15rem;
   font-size: 0.875rem;
+  overflow-wrap: anywhere;
 }
 
 .profile-role {
@@ -77,15 +78,9 @@
 }
 
 .alert-error {
-  background: color-mix(in oklab, var(--red) 10%, transparent);
-  border: 1px solid color-mix(in oklab, var(--red) 20%, transparent);
+  background: color-mix(in oklab, var(--error) 10%, transparent);
+  border: 1px solid color-mix(in oklab, var(--error) 20%, transparent);
   color: var(--error);
-}
-
-.alert-success {
-  background: color-mix(in oklab, var(--success) 10%, transparent);
-  border: 1px solid color-mix(in oklab, var(--success) 20%, transparent);
-  color: var(--success);
 }
 
 .profile-sections {
@@ -99,36 +94,26 @@
   padding: 1rem;
   border-radius: 12px;
   border: 1px solid color-mix(in oklab, var(--line) 20%, transparent);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
 }
 
-.section-header {
+.profile-section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 0.75rem;
   margin-bottom: 1.25rem;
 }
 
-.section-header h2 {
+.profile-section-header h2,
+.profile-section-title {
   font-size: 1.125rem;
-  font-weight: 400;
+  font-weight: 500;
+  letter-spacing: -0.01em;
   color: var(--text);
 }
 
-.btn-edit {
-  background: transparent;
-  border: 1px solid transparent;
-  color: var(--text-muted);
-  padding: 0.375rem 0.75rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-size: 0.875rem;
-}
-
-.btn-edit:hover {
-  background: var(--surface-light);
-  color: var(--text);
+.profile-section-title {
+  margin-bottom: 1.25rem;
 }
 
 .profile-form {
@@ -148,82 +133,14 @@
   font-weight: 600;
   font-size: 0.75rem;
   text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
-.profile-form input {
-  padding: 0 0.85rem;
-  height: 42px;
-  background: var(--surface-light);
-  border: 1px solid #424141;
-  border-radius: 8px;
-  color: var(--text-muted);
-  font-size: 1rem;
-  outline: none;
-}
-
-.profile-form input:hover,
-.profile-form input:focus {
-  border-color: #525252;
-}
-
-.form-actions {
+.profile-form-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.75rem;
   margin-top: 0.5rem;
-}
-
-.btn-save {
-  background: var(--primary);
-  border: 1px solid var(--primary);
-  color: var(--text);
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 400;
-  font-size: 1rem;
-  height: 42px;
-  transition: transform 0.1s ease-in-out;
-}
-
-.btn-save:hover {
-  opacity: 0.9;
-}
-
-.btn-save:disabled {
-  opacity: 0.7;
-  pointer-events: none;
-}
-
-.btn-cancel {
-  background: var(--secondary);
-  border: 1px solid transparent;
-  color: var(--text);
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  height: 42px;
-  transition: transform 0.1s ease-in-out;
-}
-
-.btn-cancel:hover {
-  opacity: 0.9;
-}
-
-.btn-password {
-  background: var(--surface-light);
-  color: var(--text-muted);
-  border: 1px solid transparent;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-size: 0.875rem;
-}
-
-.btn-password:hover {
-  background: var(--surface-hover);
-  color: var(--text);
 }
 
 .profile-details {
@@ -235,17 +152,21 @@
 .detail-row {
   display: flex;
   gap: 1rem;
+  min-width: 0;
 }
 
 .detail-label {
+  flex-shrink: 0;
   color: var(--text-muted);
   min-width: 100px;
   font-size: 0.875rem;
 }
 
 .detail-value {
+  min-width: 0;
   color: var(--text);
   font-size: 0.875rem;
+  overflow-wrap: anywhere;
 }
 
 .stats-grid {
@@ -266,6 +187,7 @@
   font-size: 1.75rem;
   font-weight: 700;
   color: var(--primary);
+  font-variant-numeric: tabular-nums;
 }
 
 .stat-label {
@@ -275,38 +197,41 @@
   margin-top: 0.2rem;
 }
 
-.reviews-list {
+.profile-reviews {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
 
-.review-item {
+.profile-review {
   background: var(--surface-light);
   padding: 0.85rem;
   border-radius: 8px;
 }
 
-.review-title {
+.profile-review-title {
   font-weight: 600;
   margin-bottom: 0.2rem;
   color: var(--text);
+  overflow-wrap: anywhere;
 }
 
-.review-rating {
+.profile-review-rating {
   color: var(--warning);
   font-size: 0.875rem;
   margin-bottom: 0.4rem;
 }
 
-.review-item .review-text {
+.profile-review-text {
   color: var(--text-muted);
   font-size: 0.875rem;
   line-height: 1.5;
   margin-bottom: 0.4rem;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
 }
 
-.review-date {
+.profile-review-date {
   color: var(--text-dark);
   font-size: 0.75rem;
 }
@@ -326,9 +251,12 @@
     font-size: 2rem;
   }
 
-  .section-header {
+  .profile-info {
+    width: 100%;
+  }
+
+  .detail-row {
     flex-direction: column;
-    gap: 0.75rem;
-    align-items: flex-start;
+    gap: 0.15rem;
   }
 }

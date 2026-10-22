@@ -1,68 +1,80 @@
 import { useState, useEffect } from 'react';
+import { m } from 'motion/react';
 import { toast } from 'sonner';
+import { User as UserIcon } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { authAPI, reviewsAPI, watchlistAPI } from '../services/api';
 import { Loading } from '../components';
+import { firstGrapheme, formatNumber, formatStatus } from '../lib/format';
+import { enter } from '../lib/motion';
 import './Profile.css';
+
+const EMPTY_PASSWORDS = { currentPassword: '', newPassword: '', confirmPassword: '' };
 
 const Profile = () => {
   const { user, updateUser } = useAuth();
   const [reviews, setReviews] = useState([]);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [avatarFailed, setAvatarFailed] = useState(false);
 
-  // Edit mode states
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({ username: '', avatar: '' });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
 
-  // Password change states
   const [showPasswordForm, setShowPasswordForm] = useState(false);
-  const [passwordData, setPasswordData] = useState({
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: ''
-  });
+  const [passwordData, setPasswordData] = useState(EMPTY_PASSWORDS);
+
+  const userId = user?._id;
 
   useEffect(() => {
-    if (user) {
-      setFormData({ username: user.username, avatar: user.avatar || '' });
-      fetchUserData();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (user) setFormData({ username: user.username, avatar: user.avatar || '' });
+    setAvatarFailed(false);
   }, [user]);
 
-  const fetchUserData = async () => {
-    try {
-      setLoading(true);
-      const [reviewsRes, statsRes] = await Promise.all([
-        reviewsAPI.getAll({ userId: user._id, limit: 5 }),
-        watchlistAPI.getStats()
-      ]);
-      setReviews(reviewsRes.data.data);
-      setStats(statsRes.data.data);
-    } catch {
-      toast.error('Failed to load profile data');
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    if (!userId) return;
+    const fetchUserData = async () => {
+      try {
+        setLoading(true);
+        const [reviewsRes, statsRes] = await Promise.all([
+          reviewsAPI.getAll({ userId, limit: 5 }),
+          watchlistAPI.getStats()
+        ]);
+        setReviews(reviewsRes.data.data);
+        setStats(statsRes.data.data);
+      } catch {
+        toast.error('Failed to load profile data');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUserData();
+  }, [userId]);
 
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
     setError(null);
-    setSuccess(null);
-    setSaving(true);
 
+    const username = formData.username.trim();
+    if (username.length < 3 || username.length > 30) {
+      setError('Username must be between 3 and 30 characters');
+      return;
+    }
+    if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+      setError('Username can only contain letters, numbers, and underscores');
+      return;
+    }
+
+    setSaving(true);
     try {
-      const response = await authAPI.updateMe(formData);
+      const response = await authAPI.updateMe({ ...formData, username });
       updateUser(response.data.data);
       setEditMode(false);
       toast.success('Profile updated');
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed to update profile');
+      setError(err.response?.data?.errors?.[0]?.message || err.response?.data?.message || 'Failed to update profile');
     } finally {
       setSaving(false);
     }
@@ -71,51 +83,63 @@ const Profile = () => {
   const handlePasswordChange = async (e) => {
     e.preventDefault();
     setError(null);
-    setSuccess(null);
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      toast.error('New passwords do not match');
+      setError('New passwords do not match');
       return;
     }
 
     if (passwordData.newPassword.length < 6) {
-      toast.error('Password must be at least 6 characters');
+      setError('Password must be at least 6 characters');
       return;
     }
 
     setSaving(true);
-
     try {
       await authAPI.changePassword({
         currentPassword: passwordData.currentPassword,
         newPassword: passwordData.newPassword
       });
       setShowPasswordForm(false);
-      setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+      setPasswordData(EMPTY_PASSWORDS);
       toast.success('Password changed');
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed to change password');
+      setError(err.response?.data?.message || 'Failed to change password');
     } finally {
       setSaving(false);
     }
   };
 
+  const cancelEdit = () => {
+    setEditMode(false);
+    setError(null);
+    setFormData({ username: user.username, avatar: user.avatar || '' });
+  };
+
+  const cancelPassword = () => {
+    setShowPasswordForm(false);
+    setError(null);
+    setPasswordData(EMPTY_PASSWORDS);
+  };
+
   if (!user || loading) return <Loading message="Loading profile..." />;
+
+  const initial = firstGrapheme(user.username);
 
   return (
     <div className="profile-page">
-      <div className="profile-header">
+      <div className="profile-header enter">
         <div className="profile-avatar">
-          {user.avatar ? (
-            <img src={user.avatar} alt={user.username} />
+          {user.avatar && !avatarFailed ? (
+            <img src={user.avatar} alt={user.username} onError={() => setAvatarFailed(true)} />
           ) : (
-            <span className="avatar-placeholder">
-              {user.username.charAt(0).toUpperCase()}
+            <span className="avatar-placeholder" aria-hidden="true">
+              {initial || <UserIcon size={40} />}
             </span>
           )}
         </div>
         <div className="profile-info">
-          <h1>{user.username}</h1>
+          <h1 className="page-title">{user.username}</h1>
           <p className="profile-email">{user.email}</p>
           <p className="profile-role">
             {user.role === 'admin' ? '👑 Admin' : '👤 Member'}
@@ -126,37 +150,37 @@ const Profile = () => {
         </div>
       </div>
 
-      {(error || success) && (
-        <div className={`alert ${error ? 'alert-error' : 'alert-success'}`}>
-          {error || success}
+      {error && (
+        <div className="alert alert-error appear" role="alert">
+          {error}
         </div>
       )}
 
       <div className="profile-sections">
         <section className="profile-section">
-          <div className="section-header">
+          <div className="profile-section-header">
             <h2>Profile Settings</h2>
             {!editMode && (
-              <button 
-                onClick={() => setEditMode(true)} 
-                className="btn-edit"
-              >
+              <button onClick={() => { setError(null); setEditMode(true); }} className="btn btn-ghost btn-sm">
                 Edit Profile
               </button>
             )}
           </div>
 
           {editMode ? (
-            <form onSubmit={handleProfileUpdate} className="profile-form">
+            <m.form key="profile-form" onSubmit={handleProfileUpdate} className="profile-form" {...enter}>
               <div className="form-group">
                 <label htmlFor="username">Username</label>
                 <input
                   type="text"
                   id="username"
+                  className="field"
                   value={formData.username}
                   onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                   required
                   minLength={3}
+                  maxLength={30}
+                  autoComplete="username"
                 />
               </div>
 
@@ -165,28 +189,22 @@ const Profile = () => {
                 <input
                   type="url"
                   id="avatar"
+                  className="field"
                   value={formData.avatar}
                   onChange={(e) => setFormData({ ...formData, avatar: e.target.value })}
                   placeholder="https://example.com/avatar.jpg"
                 />
               </div>
 
-              <div className="form-actions">
-                <button type="submit" disabled={saving} className="btn-save">
+              <div className="profile-form-actions">
+                <button type="submit" disabled={saving} className="btn btn-primary">
                   {saving ? 'Saving...' : 'Save Changes'}
                 </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setEditMode(false);
-                    setFormData({ username: user.username, avatar: user.avatar || '' });
-                  }}
-                  className="btn-cancel"
-                >
+                <button type="button" onClick={cancelEdit} className="btn btn-secondary">
                   Cancel
                 </button>
               </div>
-            </form>
+            </m.form>
           ) : (
             <div className="profile-details">
               <div className="detail-row">
@@ -202,23 +220,22 @@ const Profile = () => {
         </section>
 
         <section className="profile-section">
-          <div className="section-header">
+          <div className="profile-section-header">
             <h2>Security</h2>
           </div>
 
           {showPasswordForm ? (
-            <form onSubmit={handlePasswordChange} className="profile-form">
+            <m.form key="password-form" onSubmit={handlePasswordChange} className="profile-form" {...enter}>
               <div className="form-group">
                 <label htmlFor="currentPassword">Current Password</label>
                 <input
                   type="password"
                   id="currentPassword"
+                  className="field"
                   value={passwordData.currentPassword}
-                  onChange={(e) => setPasswordData({ 
-                    ...passwordData, 
-                    currentPassword: e.target.value 
-                  })}
+                  onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
                   required
+                  autoComplete="current-password"
                 />
               </div>
 
@@ -227,13 +244,12 @@ const Profile = () => {
                 <input
                   type="password"
                   id="newPassword"
+                  className="field"
                   value={passwordData.newPassword}
-                  onChange={(e) => setPasswordData({ 
-                    ...passwordData, 
-                    newPassword: e.target.value 
-                  })}
+                  onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
                   required
                   minLength={6}
+                  autoComplete="new-password"
                 />
               </div>
 
@@ -242,36 +258,25 @@ const Profile = () => {
                 <input
                   type="password"
                   id="confirmPassword"
+                  className="field"
                   value={passwordData.confirmPassword}
-                  onChange={(e) => setPasswordData({ 
-                    ...passwordData, 
-                    confirmPassword: e.target.value 
-                  })}
+                  onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
                   required
+                  autoComplete="new-password"
                 />
               </div>
 
-              <div className="form-actions">
-                <button type="submit" disabled={saving} className="btn-save">
+              <div className="profile-form-actions">
+                <button type="submit" disabled={saving} className="btn btn-primary">
                   {saving ? 'Changing...' : 'Change Password'}
                 </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowPasswordForm(false);
-                    setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
-                  }}
-                  className="btn-cancel"
-                >
+                <button type="button" onClick={cancelPassword} className="btn btn-secondary">
                   Cancel
                 </button>
               </div>
-            </form>
+            </m.form>
           ) : (
-            <button
-              onClick={() => setShowPasswordForm(true)}
-              className="btn-password"
-            >
+            <button onClick={() => { setError(null); setShowPasswordForm(true); }} className="btn btn-secondary btn-sm">
               Change Password
             </button>
           )}
@@ -279,18 +284,16 @@ const Profile = () => {
 
         {stats && (
           <section className="profile-section">
-            <h2>Watchlist Stats</h2>
+            <h2 className="profile-section-title">Watchlist Stats</h2>
             <div className="stats-grid">
               <div className="stat-card">
-                <span className="stat-number">{stats.total}</span>
+                <span className="stat-number">{formatNumber(stats.total)}</span>
                 <span className="stat-label">Total Titles</span>
               </div>
               {Object.entries(stats.byStatus || {}).map(([status, count]) => (
                 <div key={status} className="stat-card">
-                  <span className="stat-number">{count}</span>
-                  <span className="stat-label">
-                    {status.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
-                  </span>
+                  <span className="stat-number">{formatNumber(count)}</span>
+                  <span className="stat-label">{formatStatus(status)}</span>
                 </div>
               ))}
             </div>
@@ -299,18 +302,18 @@ const Profile = () => {
 
         {reviews.length > 0 && (
           <section className="profile-section">
-            <h2>Recent Reviews</h2>
-            <div className="reviews-list">
+            <h2 className="profile-section-title">Recent Reviews</h2>
+            <div className="profile-reviews">
               {reviews.map((review) => (
-                <div key={review._id} className="review-item">
-                  <div className="review-title">
+                <div key={review._id} className="profile-review">
+                  <div className="profile-review-title">
                     {review.titleId?.name || 'Unknown Title'}
                   </div>
-                  <div className="review-rating">★ {review.rating}/10</div>
+                  <div className="profile-review-rating">★ {review.rating}/10</div>
                   {review.text && (
-                    <p className="review-text">{review.text}</p>
+                    <p className="profile-review-text">{review.text}</p>
                   )}
-                  <span className="review-date">
+                  <span className="profile-review-date">
                     {new Date(review.createdAt).toLocaleDateString()}
                   </span>
                 </div>

@@ -43,6 +43,20 @@ const userValidation = {
       .notEmpty()
       .withMessage('Password is required'),
     validate
+  ],
+  updateMe: [
+    body('username')
+      .optional()
+      .trim()
+      .isLength({ min: 3, max: 30 })
+      .withMessage('Username must be between 3 and 30 characters')
+      .matches(/^[a-zA-Z0-9_]+$/)
+      .withMessage('Username can only contain letters, numbers, and underscores'),
+    body('avatar')
+      .optional({ values: 'falsy' })
+      .isURL({ protocols: ['http', 'https'], require_protocol: true })
+      .withMessage('Avatar must be a valid http(s) URL'),
+    validate
   ]
 };
 

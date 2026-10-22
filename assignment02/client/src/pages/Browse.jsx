@@ -1,9 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { m } from 'motion/react';
 import { titlesAPI } from '../services/api';
 import { TitleCard, Loading, Pagination } from '../components';
+import { plural } from '../lib/format';
 import './Browse.css';
+
+const DEFAULT_FILTERS = { search: '', type: '', genre: '', year: '', sort: '-createdAt' };
+const TYPES = ['anime', 'movie', 'series', 'ova', 'special'];
+const SORT_OPTIONS = [
+  { value: '-createdAt', label: 'Newest First' },
+  { value: 'createdAt', label: 'Oldest First' },
+  { value: '-rating.average', label: 'Highest Rated' },
+  { value: 'name', label: 'A-Z' },
+  { value: '-name', label: 'Z-A' },
+  { value: '-year', label: 'Year (Newest)' }
+];
+const CURRENT_YEAR = new Date().getFullYear();
+const YEARS = Array.from({ length: CURRENT_YEAR - 1960 + 2 }, (_, i) => CURRENT_YEAR + 1 - i);
 
 const Browse = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -11,34 +24,35 @@ const Browse = () => {
   const [genres, setGenres] = useState([]);
   const [pagination, setPagination] = useState({ page: 1, pages: 1, total: 0 });
   const [loading, setLoading] = useState(true);
+  const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(null);
+  const [animateIntro, setAnimateIntro] = useState(false);
+  const hasLoaded = useRef(false);
 
-  // Filter state
-  const [filters, setFilters] = useState({
+  const filters = useMemo(() => ({
     search: searchParams.get('search') || '',
     type: searchParams.get('type') || '',
     genre: searchParams.get('genre') || '',
     year: searchParams.get('year') || '',
-    sort: searchParams.get('sort') || '-createdAt'
-  });
+    sort: searchParams.get('sort') || DEFAULT_FILTERS.sort
+  }), [searchParams]);
+  const [searchInput, setSearchInput] = useState(filters.search);
 
   const page = parseInt(searchParams.get('page')) || 1;
 
-  // Fetch genres on mount
   useEffect(() => {
-    const fetchGenres = async () => {
-      try {
-        const response = await titlesAPI.getGenres();
-        setGenres(response.data.data);
-      } catch (err) {
-        console.error('Failed to fetch genres:', err);
-      }
-    };
-    fetchGenres();
+    setSearchInput(filters.search);
+  }, [filters.search]);
+
+  useEffect(() => {
+    titlesAPI.getGenres()
+      .then((response) => setGenres(response.data.data))
+      .catch((err) => console.error('Failed to fetch genres:', err));
   }, []);
 
-  // Fetch titles when filters or page changes
   useEffect(() => {
+    let cancelled = false;
+
     const fetchTitles = async () => {
       try {
         setLoading(true);
@@ -53,91 +67,90 @@ const Browse = () => {
         };
 
         const response = await titlesAPI.getAll(params);
+        if (cancelled) return;
+        // Cards animate on the first load only; later refetches swap content in place.
+        setAnimateIntro(!hasLoaded.current);
+        hasLoaded.current = true;
         setTitles(response.data.data);
         setPagination(response.data.pagination);
         setError(null);
       } catch (err) {
+        if (cancelled) return;
         setError('Failed to load titles');
         console.error(err);
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+          setLoaded(true);
+        }
       }
     };
 
     fetchTitles();
+    return () => {
+      cancelled = true;
+    };
   }, [page, filters]);
 
-  const handleFilterChange = (key, value) => {
-    const newFilters = { ...filters, [key]: value };
-    setFilters(newFilters);
-
-    // Update URL params
+  const applyFilters = (newFilters) => {
     const params = new URLSearchParams();
     Object.entries(newFilters).forEach(([k, v]) => {
       if (v) params.set(k, v);
     });
-    params.set('page', '1'); // Reset to page 1 on filter change
+    params.set('page', '1');
     setSearchParams(params);
   };
+
+  const handleFilterChange = (key, value) => applyFilters({ ...filters, [key]: value });
+
+  useEffect(() => {
+    if (searchInput === filters.search) return;
+    const timer = setTimeout(() => applyFilters({ ...filters, search: searchInput }), 300);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchInput]);
 
   const handlePageChange = (newPage) => {
     const params = new URLSearchParams(searchParams);
     params.set('page', newPage.toString());
     setSearchParams(params);
+    window.scrollTo({ top: 0 });
   };
 
   const clearFilters = () => {
-    setFilters({
-      search: '',
-      type: '',
-      genre: '',
-      year: '',
-      sort: '-createdAt'
-    });
+    setSearchInput('');
     setSearchParams({});
   };
 
-  const years = Array.from({ length: 30 }, (_, i) => new Date().getFullYear() - i);
-  const types = ['anime', 'movie', 'series', 'ova', 'special'];
-  const sortOptions = [
-    { value: '-createdAt', label: 'Newest First' },
-    { value: 'createdAt', label: 'Oldest First' },
-    { value: '-rating.average', label: 'Highest Rated' },
-    { value: 'name', label: 'A-Z' },
-    { value: '-name', label: 'Z-A' },
-    { value: '-year', label: 'Year (Newest)' }
-  ];
+  const refreshing = loading && loaded;
 
   return (
-    <m.div
-      className="browse"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
-    >
+    <div className="browse">
       <div className="browse-header">
-        <h1>Browse Titles</h1>
-        <p>{pagination.total} titles found</p>
+        <h1 className="page-title">Browse Titles</h1>
+        <p>{loaded ? `${plural(pagination.total, 'title', 'titles')} found` : ' '}</p>
       </div>
 
       <div className="filters">
         <div className="filter-row">
           <input
-            type="text"
+            type="search"
             placeholder="Search titles..."
-            value={filters.search}
-            onChange={(e) => handleFilterChange('search', e.target.value)}
-            className="search-input"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            className="field search-input"
+            aria-label="Search titles"
+            enterKeyHint="search"
           />
 
           <select
             value={filters.type}
             onChange={(e) => handleFilterChange('type', e.target.value)}
-            className="filter-select"
+            className="field filter-select"
             aria-label="Filter by type"
           >
             <option value="">All Types</option>
-            {types.map((type) => (
+            {TYPES.map((type) => (
               <option key={type} value={type}>
                 {type.charAt(0).toUpperCase() + type.slice(1)}
               </option>
@@ -147,7 +160,7 @@ const Browse = () => {
           <select
             value={filters.genre}
             onChange={(e) => handleFilterChange('genre', e.target.value)}
-            className="filter-select"
+            className="field filter-select"
             aria-label="Filter by genre"
           >
             <option value="">All Genres</option>
@@ -159,11 +172,11 @@ const Browse = () => {
           <select
             value={filters.year}
             onChange={(e) => handleFilterChange('year', e.target.value)}
-            className="filter-select"
+            className="field filter-select"
             aria-label="Filter by year"
           >
             <option value="">All Years</option>
-            {years.map((year) => (
+            {YEARS.map((year) => (
               <option key={year} value={year}>{year}</option>
             ))}
           </select>
@@ -171,41 +184,40 @@ const Browse = () => {
           <select
             value={filters.sort}
             onChange={(e) => handleFilterChange('sort', e.target.value)}
-            className="filter-select"
+            className="field filter-select"
             aria-label="Sort by"
           >
-            {sortOptions.map((opt) => (
+            {SORT_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>{opt.label}</option>
             ))}
           </select>
 
-          <button onClick={clearFilters} className="btn-clear">
+          <button onClick={clearFilters} className="btn btn-secondary btn-clear">
             Clear
           </button>
         </div>
       </div>
 
-      {loading ? (
+      {!loaded ? (
         <Loading message="Loading titles..." />
       ) : error ? (
-        <div className="error-message">{error}</div>
+        <div className="browse-error">{error}</div>
       ) : titles.length === 0 ? (
         <div className="empty-state">
           <p>No titles found matching your criteria.</p>
-          <button onClick={clearFilters}>Clear Filters</button>
+          <button className="btn btn-primary" onClick={clearFilters}>Clear Filters</button>
         </div>
       ) : (
-        <>
+        <div className={`browse-results ${refreshing ? 'is-refreshing' : ''}`} aria-busy={refreshing}>
           <div className="title-grid">
             {titles.map((title, i) => (
-              <m.div
+              <div
                 key={title._id}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.25, delay: i * 0.03 }}
+                className={animateIntro ? 'enter' : undefined}
+                style={animateIntro ? { '--i': Math.min(i, 8) } : undefined}
               >
                 <TitleCard title={title} />
-              </m.div>
+              </div>
             ))}
           </div>
 
@@ -214,9 +226,9 @@ const Browse = () => {
             pages={pagination.pages}
             onPageChange={handlePageChange}
           />
-        </>
+        </div>
       )}
-    </m.div>
+    </div>
   );
 };
 

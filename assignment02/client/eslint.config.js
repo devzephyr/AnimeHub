@@ -23,7 +23,8 @@ export default defineConfig([
       },
     },
     rules: {
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      // `m` is Motion's lazy component namespace, used only as <m.div> in JSX.
+      'no-unused-vars': ['error', { varsIgnorePattern: '^([A-Z_]|m$)' }],
     },
   },
 ])

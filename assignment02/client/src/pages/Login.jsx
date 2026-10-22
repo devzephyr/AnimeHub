@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { toast } from 'sonner';
 import { useAuth } from '../context/AuthContext';
 import './Auth.css';
 
@@ -9,11 +8,15 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
-  const { login, error: authError } = useAuth();
+  const { login, error: authError, setError } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
   const from = location.state?.from?.pathname || '/';
+
+  useEffect(() => {
+    setError(null);
+  }, [setError]);
 
   const validateForm = () => {
     const newErrors = {};
@@ -49,10 +52,7 @@ const Login = () => {
     try {
       const result = await login(formData.email, formData.password);
       if (result.success) {
-        toast.success('Welcome back!');
         navigate(from, { replace: true });
-      } else {
-        toast.error(result.error || 'Login failed');
       }
     } finally {
       setLoading(false);
@@ -61,26 +61,29 @@ const Login = () => {
 
   return (
     <div className="auth-page">
-      <div className="auth-container">
-        <h1>Welcome Back</h1>
+      <div className="auth-container enter">
+        <h1 className="page-title">Welcome Back</h1>
         <p className="auth-subtitle">Login to your AnimeHub account</p>
 
-        {authError && <div className="auth-error">{authError}</div>}
+        {authError && <div className="auth-error appear" role="alert">{authError}</div>}
 
-        <form onSubmit={handleSubmit} className="auth-form">
+        <form onSubmit={handleSubmit} className="auth-form" noValidate>
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input
               type="email"
               id="email"
               name="email"
+              className="field"
               value={formData.email}
               onChange={handleChange}
               placeholder="Enter your email"
+              autoComplete="email"
+              aria-invalid={Boolean(errors.email)}
               aria-describedby={errors.email ? 'email-error' : undefined}
             />
             {errors.email && (
-              <span id="email-error" className="field-error">{errors.email}</span>
+              <span id="email-error" className="field-error appear">{errors.email}</span>
             )}
           </div>
 
@@ -90,17 +93,20 @@ const Login = () => {
               type="password"
               id="password"
               name="password"
+              className="field"
               value={formData.password}
               onChange={handleChange}
               placeholder="Enter your password"
+              autoComplete="current-password"
+              aria-invalid={Boolean(errors.password)}
               aria-describedby={errors.password ? 'password-error' : undefined}
             />
             {errors.password && (
-              <span id="password-error" className="field-error">{errors.password}</span>
+              <span id="password-error" className="field-error appear">{errors.password}</span>
             )}
           </div>
 
-          <button type="submit" disabled={loading} className="btn-auth">
+          <button type="submit" disabled={loading} className="btn btn-primary btn-block btn-auth">
             {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>

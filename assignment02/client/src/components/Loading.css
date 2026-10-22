@@ -9,12 +9,16 @@
 
 .spinner-icon {
   color: var(--primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  animation: spin 800ms linear infinite;
 }
 
 .loading-container p {
   margin-top: 1rem;
   font-size: 0.875rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner-icon {
+    animation-duration: 2s;
+  }
 }

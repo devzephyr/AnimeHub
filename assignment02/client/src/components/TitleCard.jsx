@@ -1,26 +1,22 @@
-import { m } from 'motion/react';
 import { Link } from 'react-router-dom';
+import { FALLBACK_POSTER, onPosterError } from '../lib/poster';
+import { plural } from '../lib/format';
 import './TitleCard.css';
 
 const TitleCard = ({ title }) => {
-  const defaultPoster = 'https://via.placeholder.com/300x450?text=No+Poster';
-
   return (
     <Link to={`/titles/${title._id}`} className="title-card">
-      <m.div
-        whileHover={{ y: -4 }}
-        transition={{ type: "tween", duration: 0.2 }}
-      >
+      <div className="title-card-inner">
         <div className="title-poster">
           <img
-            src={title.poster || defaultPoster}
+            src={title.poster || FALLBACK_POSTER}
             alt={title.name}
-            onError={(e) => {
-              e.target.src = defaultPoster;
-            }}
+            loading="lazy"
+            decoding="async"
+            onError={onPosterError}
           />
           <div className="title-overlay">
-            <span className="title-type">{title.type}</span>
+            {title.type && <span className="title-type">{title.type}</span>}
             {title.rating?.average > 0 && (
               <span className="title-rating">★ {title.rating.average.toFixed(1)}</span>
             )}
@@ -29,18 +25,11 @@ const TitleCard = ({ title }) => {
         <div className="title-info">
           <h3 className="title-name">{title.name}</h3>
           <div className="title-meta">
-            {title.year && <span>{title.year}</span>}
-            {title.episodes && <span>{title.episodes} eps</span>}
+            {title.year > 0 && <span>{title.year}</span>}
+            {title.episodes > 0 && <span>{plural(title.episodes, 'ep', 'eps')}</span>}
           </div>
-          {title.genres?.length > 0 && (
-            <div className="title-genres">
-              {title.genres.slice(0, 3).map((genre) => (
-                <span key={genre} className="genre-tag">{genre}</span>
-              ))}
-            </div>
-          )}
         </div>
-      </m.div>
+      </div>
     </Link>
   );
 };

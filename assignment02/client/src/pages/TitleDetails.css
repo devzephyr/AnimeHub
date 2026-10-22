@@ -6,36 +6,32 @@
 
 .title-hero {
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 280px minmax(0, 1fr);
   gap: 2.5rem;
   margin-bottom: 48px;
   background: color-mix(in oklab, var(--surface) 50%, transparent);
   padding: 1rem;
   border-radius: 12px;
   border: 1px solid color-mix(in oklab, var(--line) 20%, transparent);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
-}
-
-.title-poster-large {
-  border-radius: 12px;
-  overflow: hidden;
 }
 
 .title-poster-large img {
   width: 100%;
-  height: auto;
+  aspect-ratio: 215 / 323;
+  object-fit: cover;
   display: block;
   border-radius: 12px;
+  background: var(--surface);
 }
 
 .title-info-large {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  min-width: 0;
 }
 
 .title-type-badge {
-  display: inline-block;
   background: var(--primary);
   color: var(--text);
   padding: 0 4px;
@@ -44,15 +40,8 @@
   text-transform: uppercase;
   font-weight: 700;
   width: fit-content;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.04em;
   line-height: 15px;
-}
-
-.title-info-large h1 {
-  font-size: 1.5rem;
-  margin: 0;
-  font-weight: 400;
-  color: var(--text);
 }
 
 .title-meta-row {
@@ -63,12 +52,6 @@
   font-size: 0.875rem;
 }
 
-.title-meta-row > span {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
 .status-badge {
   background: var(--surface-light);
   padding: 0 0.6rem;
@@ -76,8 +59,6 @@
   text-transform: capitalize;
   color: var(--success);
   font-weight: 500;
-  font-size: 0.875rem;
-  line-height: 1.5;
 }
 
 .studio {
@@ -87,6 +68,7 @@
 .rating-large {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.5rem;
   font-size: 1.25rem;
 }
@@ -98,6 +80,7 @@
 .rating-large .rating-value {
   font-weight: 700;
   color: var(--text);
+  font-variant-numeric: tabular-nums;
 }
 
 .rating-large .rating-count {
@@ -116,17 +99,10 @@
   color: var(--text-muted);
   padding: 0.3rem 0.8rem;
   border-radius: 8px;
-  text-decoration: none;
   font-size: 0.75rem;
   font-weight: 500;
-  transition: all 0.2s;
   border: 1px solid transparent;
-}
-
-.genre-link:hover {
-  background: var(--surface-hover);
-  color: var(--text);
-  border-color: color-mix(in oklab, var(--line) 20%, transparent);
+  transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
 }
 
 .synopsis h3 {
@@ -140,6 +116,25 @@
   color: var(--text-muted);
   line-height: 1.7;
   font-size: 0.875rem;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.synopsis p.is-clamped {
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.synopsis-toggle {
+  margin-top: 0.25rem;
+  padding: 0.25rem 0;
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
 .user-actions {
@@ -152,49 +147,13 @@
   border-top: 1px solid color-mix(in oklab, var(--line) 20%, transparent);
 }
 
-.watchlist-controls {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-
 .in-watchlist {
-  color: var(--success);
-  font-weight: 600;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.4rem;
+  color: var(--success);
+  font-weight: 600;
   font-size: 0.875rem;
-}
-
-.btn-add,
-.btn-review,
-.btn-remove {
-  background: var(--primary);
-  border: 1px solid var(--primary);
-  color: var(--text);
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 400;
-  font-size: 1rem;
-  height: 42px;
-  transition: transform 0.1s ease-in-out;
-  white-space: nowrap;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-}
-
-.btn-add:hover,
-.btn-review:hover,
-.btn-remove:hover {
-  opacity: 0.9;
-}
-
-.btn-add:active,
-.btn-review:active,
-.btn-remove:active {
-  transform: scale(0.99);
 }
 
 .review-form-container {
@@ -203,146 +162,70 @@
   border-radius: 12px;
   margin-bottom: 2rem;
   border: 1px solid color-mix(in oklab, var(--line) 20%, transparent);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
 }
 
 .review-form h3 {
   margin-bottom: 1.25rem;
   color: var(--text);
   font-size: 1.125rem;
-  font-weight: 400;
+  font-weight: 500;
 }
 
-.form-group {
+.review-form .form-group {
   margin-bottom: 1.25rem;
 }
 
-.form-group label {
+.review-form .form-label {
   display: block;
   margin-bottom: 4px;
   font-weight: 600;
   color: var(--text-muted);
   font-size: 0.75rem;
   text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .rating-input {
   display: flex;
   align-items: center;
-  gap: 0.2rem;
+  flex-wrap: wrap;
 }
 
 .rating-star {
+  width: 32px;
+  height: 40px;
+  padding: 0;
   background: none;
   border: none;
   font-size: 1.4rem;
   color: var(--surface-hover);
-  cursor: pointer;
-  padding: 0;
-  transition: color 0.1s;
+  touch-action: manipulation;
+  transition: color 100ms ease, transform 160ms var(--ease-out);
 }
 
 .rating-star.active {
   color: var(--warning);
 }
 
-.rating-star:hover {
-  color: var(--warning);
+.rating-star:active {
+  transform: scale(calc(1 - (1 - var(--press-scale)) * 3.33));
 }
 
 .rating-display {
   margin-left: 0.75rem;
   color: var(--text-muted);
   font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
 }
 
-.form-group textarea {
-  width: 100%;
-  padding: 0.75rem;
-  background: var(--surface-light);
-  border: 1px solid #424141;
-  border-radius: 8px;
-  color: var(--text-muted);
-  resize: vertical;
-  font-family: inherit;
-  font-size: 1rem;
-  min-height: 64px;
-  outline: none;
-}
-
-.form-group textarea:hover,
-.form-group textarea:focus {
-  border-color: #525252;
-}
-
-.form-actions {
+.review-form-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.75rem;
 }
 
-.btn-submit {
-  background: var(--primary);
-  border: 1px solid var(--primary);
-  color: var(--text);
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 400;
-  font-size: 1rem;
-  height: 42px;
-  transition: transform 0.1s ease-in-out;
-}
-
-.btn-submit:hover {
-  opacity: 0.9;
-}
-
-.btn-submit:active {
-  transform: scale(0.99);
-}
-
-.btn-submit:disabled {
-  opacity: 0.7;
-  pointer-events: none;
-}
-
-.btn-delete {
-  background: var(--error);
-  border: 1px solid var(--error);
-  color: var(--text);
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  height: 42px;
-  transition: transform 0.1s ease-in-out;
-}
-
-.btn-delete:hover {
-  opacity: 0.9;
-}
-
-.btn-cancel {
-  background: var(--secondary);
-  border: 1px solid transparent;
-  color: var(--text);
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  height: 42px;
-  transition: transform 0.1s ease-in-out;
-}
-
-.btn-cancel:hover {
-  opacity: 0.9;
-}
-
-.reviews-section h2 {
+.reviews-section .section-title {
   margin-bottom: 1.25rem;
-  font-size: 1.5rem;
-  font-weight: 400;
-  color: var(--text);
 }
 
 .no-reviews {
@@ -365,7 +248,6 @@
   padding: 1rem;
   border-radius: 12px;
   border: 1px solid color-mix(in oklab, var(--line) 20%, transparent);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
 }
 
 .review-card.my-review {
@@ -375,18 +257,24 @@
 .review-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  gap: 0.75rem;
   margin-bottom: 0.5rem;
 }
 
 .reviewer-name {
+  min-width: 0;
   font-weight: 600;
   color: var(--text);
+  overflow-wrap: anywhere;
 }
 
 .review-rating {
+  flex-shrink: 0;
+  white-space: nowrap;
   color: var(--warning);
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 
 .review-text {
@@ -394,11 +282,18 @@
   line-height: 1.6;
   margin-bottom: 0.4rem;
   font-size: 0.875rem;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
 }
 
 .review-date {
   font-size: 0.75rem;
   color: var(--text-dark);
+}
+
+.load-more {
+  display: flex;
+  margin: 1.25rem auto 0;
 }
 
 .error-page {
@@ -407,17 +302,31 @@
   color: var(--error);
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .genre-link:hover {
+    background: var(--surface-hover);
+    color: var(--text);
+    border-color: color-mix(in oklab, var(--line) 20%, transparent);
+  }
+
+  /* Hover previews the rating: light every star up to the hovered one. */
+  .rating-input:hover .rating-star {
+    color: var(--warning);
+  }
+
+  .rating-input .rating-star:hover ~ .rating-star {
+    color: var(--surface-hover);
+  }
+}
+
 @media (max-width: 768px) {
   .title-hero {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .title-poster-large {
+    width: 100%;
     max-width: 250px;
     margin: 0 auto;
-  }
-
-  .title-info-large h1 {
-    font-size: 1.25rem;
   }
 }

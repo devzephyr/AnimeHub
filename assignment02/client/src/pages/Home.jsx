@@ -1,12 +1,19 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { m } from 'motion/react';
 import { BookOpen, Star, Search } from 'lucide-react';
 import { titlesAPI } from '../services/api';
+import { useAuth } from '../context/AuthContext';
 import { TitleCard, Loading } from '../components';
 import './Home.css';
 
+const FEATURES = [
+  { icon: BookOpen, title: 'Track Your Watchlist', desc: 'Keep track of what you\'re watching and plan what to watch next.' },
+  { icon: Star, title: 'Rate & Review', desc: 'Share your thoughts and help others discover great anime.' },
+  { icon: Search, title: 'Discover New Titles', desc: 'Browse by genre, year, or rating to find your next favorite.' },
+];
+
 const Home = () => {
+  const { isAuthenticated } = useAuth();
   const [topRated, setTopRated] = useState([]);
   const [recent, setRecent] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -40,131 +47,60 @@ const Home = () => {
     return (
       <div className="error-container">
         <p>{error}</p>
-        <button onClick={() => window.location.reload()}>Retry</button>
+        <button className="btn btn-secondary" onClick={() => window.location.reload()}>Retry</button>
       </div>
     );
   }
 
+  const sections = [
+    { key: 'top', title: 'Top Rated', to: '/browse?sort=-rating.average', items: topRated },
+    { key: 'recent', title: 'Recently Added', to: '/browse', items: recent },
+  ].filter((section) => section.items.length > 0);
+
   return (
-    <m.div
-      className="home"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.4 }}
-    >
-      <m.section
-        className="hero"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-      >
+    <div className="home">
+      <section className="hero enter">
         <div className="hero-content">
-          <h1 className="hero-title">Welcome to <span className="gradient-text">AnimeHub</span></h1>
+          <h1 className="hero-title">Welcome to <span className="hero-accent">AnimeHub</span></h1>
           <p>Discover, track, and review your favorite anime and movies</p>
           <div className="hero-actions">
-            <Link to="/browse" className="btn-primary">Browse All</Link>
-            <Link to="/register" className="btn-secondary">Join Now</Link>
+            <Link to="/browse" className="btn btn-primary">Browse All</Link>
+            {!isAuthenticated && <Link to="/register" className="btn btn-secondary">Join Now</Link>}
           </div>
         </div>
-      </m.section>
+      </section>
 
-      {topRated.length > 0 && (
-        <m.section
-          className="section"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, delay: 0.2 }}
-        >
-          <m.div
-            className="section-header"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4, delay: 0.25 }}
-          >
-            <h2>Top Rated</h2>
-            <Link to="/browse?sort=-rating.average" className="view-all">
+      {sections.map((section) => (
+        <section key={section.key} className="home-section">
+          <div className="home-section-header">
+            <h2 className="section-title">{section.title}</h2>
+            <Link to={section.to} className="view-all">
               View All &rarr;
             </Link>
-          </m.div>
+          </div>
           <div className="title-grid">
-            {topRated.map((title, i) => (
-              <m.div
-                key={title._id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.3 + i * 0.06 }}
-              >
+            {section.items.map((title, i) => (
+              <div key={title._id} className="enter" style={{ '--i': i, '--enter-delay': '60ms' }}>
                 <TitleCard title={title} />
-              </m.div>
+              </div>
             ))}
           </div>
-        </m.section>
-      )}
+        </section>
+      ))}
 
-      {recent.length > 0 && (
-        <m.section
-          className="section"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, delay: 0.5 }}
-        >
-          <m.div
-            className="section-header"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4, delay: 0.55 }}
-          >
-            <h2>Recently Added</h2>
-            <Link to="/browse" className="view-all">
-              View All &rarr;
-            </Link>
-          </m.div>
-          <div className="title-grid">
-            {recent.map((title, i) => (
-              <m.div
-                key={title._id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.6 + i * 0.06 }}
-              >
-                <TitleCard title={title} />
-              </m.div>
-            ))}
-          </div>
-        </m.section>
-      )}
-
-      <m.section
-        className="features"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.4, delay: 0.8 }}
-      >
-        <h2>Why AnimeHub?</h2>
+      <section className="features">
+        <h2 className="section-title">Why AnimeHub?</h2>
         <div className="features-grid">
-          {[
-            { icon: BookOpen, title: 'Track Your Watchlist', desc: 'Keep track of what you\'re watching and plan what to watch next.' },
-            { icon: Star, title: 'Rate & Review', desc: 'Share your thoughts and help others discover great anime.' },
-            { icon: Search, title: 'Discover New Titles', desc: 'Browse by genre, year, or rating to find your next favorite.' },
-          ].map((feat, i) => (
-            <m.div
-              key={feat.title}
-              className="feature"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.35, delay: 0.85 + i * 0.1 }}
-              whileHover={{ y: -4, transition: { duration: 0.2 } }}
-            >
-              <span className="feature-icon">
-                <feat.icon size={28} strokeWidth={1.5} />
-              </span>
+          {FEATURES.map((feat) => (
+            <div key={feat.title} className="feature">
+              <feat.icon className="feature-icon" size={28} strokeWidth={1.5} aria-hidden="true" />
               <h3>{feat.title}</h3>
               <p>{feat.desc}</p>
-            </m.div>
+            </div>
           ))}
         </div>
-      </m.section>
-    </m.div>
+      </section>
+    </div>
   );
 };
 

@@ -16,7 +16,7 @@ router.post('/login', userValidation.login, login);
 
 // Protected routes
 router.get('/me', protect, getMe);
-router.put('/me', protect, updateMe);
+router.put('/me', protect, userValidation.updateMe, updateMe);
 router.put('/password', protect, changePassword);
 
 module.exports = router;

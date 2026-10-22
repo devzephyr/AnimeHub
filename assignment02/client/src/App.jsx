@@ -1,5 +1,6 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Toaster } from 'sonner';
+import { CheckCircle2, XCircle } from 'lucide-react';
 import { AuthProvider } from './context/AuthContext';
 import { Navbar, ProtectedRoute } from './components';
 import {
@@ -17,31 +18,32 @@ import './App.css';
 function App() {
   return (
     <AuthProvider>
-      <Toaster
-        theme="dark"
-        position="bottom-right"
-        toastOptions={{
-          style: {
-            background: 'var(--surface)',
-            border: '1px solid var(--border)',
-            color: 'var(--text)',
-            fontFamily: 'inherit',
-          },
-        }}
-      />
       <Router>
+        <Toaster
+          theme="dark"
+          position="bottom-right"
+          icons={{
+            success: <CheckCircle2 size={16} color="var(--success)" />,
+            error: <XCircle size={16} color="var(--error)" />,
+          }}
+          toastOptions={{
+            style: {
+              background: 'var(--surface)',
+              border: '1px solid var(--border)',
+              color: 'var(--text)',
+              fontFamily: 'inherit',
+            },
+          }}
+        />
         <div className="app">
           <Navbar />
           <main className="main-content">
             <Routes>
-              {/* Public routes */}
               <Route path="/" element={<Home />} />
               <Route path="/browse" element={<Browse />} />
               <Route path="/titles/:id" element={<TitleDetails />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-
-              {/* Protected routes */}
               <Route
                 path="/watchlist"
                 element={
@@ -58,8 +60,6 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-
-              {/* 404 fallback */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
@@ -70,16 +70,16 @@ function App() {
                 <div className="footer-col">
                   <h4>Browse</h4>
                   <ul>
-                    <li><a href="/browse">All Titles</a></li>
-                    <li><a href="/browse?type=anime">Anime</a></li>
-                    <li><a href="/browse?type=manga">Manga</a></li>
+                    <li><Link to="/browse">All Titles</Link></li>
+                    <li><Link to="/browse?type=anime">Anime</Link></li>
+                    <li><Link to="/browse?type=movie">Movies</Link></li>
                   </ul>
                 </div>
                 <div className="footer-col">
                   <h4>Account</h4>
                   <ul>
-                    <li><a href="/profile">Profile</a></li>
-                    <li><a href="/watchlist">Watchlist</a></li>
+                    <li><Link to="/profile">Profile</Link></li>
+                    <li><Link to="/watchlist">Watchlist</Link></li>
                   </ul>
                 </div>
                 <div className="footer-col">
